@@ -1,0 +1,131 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+
+body {
+  background-image: url("../images/home-bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  overflow-y: hidden;
+}
+
+#page-nav {
+  display: flex;
+  flex-direction: row;
+  height: 4rem;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+#site-logo {
+  height: 1.6rem;
+}
+
+#site-logo path{
+  fill:black;
+}
+
+#nav-left,
+#nav-center,
+#nav-right {
+  display: flex;
+  flex-direction: row;
+  gap:0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-family: 'Viga', sans-serif;
+  color: white;
+  font-size: large;
+}
+
+#nav-left {
+    margin-left: 1rem;
+}
+
+#nav-center {
+}
+
+#nav-right {
+  margin-right: 1rem;
+}
+
+main{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+#home-text{
+  font-family: 'Bungee', sans-serif;
+  font-size: 3rem;
+  color:orange;
+  margin: 5rem;
+  text-align: center;
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 1);
+  font-weight: bold;
+}
+
+
+@keyframes floating {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+#register-btn {
+  animation: floating 3s infinite; 
+  animation-play-state: running; 
+}
+
+#register-btn {
+  border: none;
+  border-radius: 10px;
+  background-color: #ff9966; 
+  color: #fff; 
+  padding: 10px 20px; 
+  font-family: 'Viga', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#register-btn:hover {
+  background-color: #ff854d;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  animation-play-state: paused; 
+}
+
+#site-footer{
+  font-family: 'Viga', sans-serif;
+  color: white;
+  font-size: small;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
