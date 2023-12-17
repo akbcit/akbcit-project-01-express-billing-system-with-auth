@@ -6,3 +6,5 @@ const verifyAuth=(req)=>{
         return false;
     }
 }
+
+module.exports = verifyAuth;
