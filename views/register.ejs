@@ -1,35 +1,64 @@
 <div id="registration-container">
-    <h2>Registration Form</h2>
-    <form action="/auth/register" method="POST">
-        <div class="form-group">
-            <label for="email">Email Address:</label>
-            <input type="email" id="email" name="email" value="<%= newUser.email ? newUser.email : "" %>" required>
-        </div>        
-        <div class="form-group">
-            <label for="userName">Username:</label>
-            <input type="text" id="username" name="username" required>
-        </div>
-        <div class="form-group">
-            <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" name="firstName" value="<%= newUser.firstName ? newUser.firstName : "" %>" required>
-        </div>
-        <div class="form-group">
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName" value="<%= newUser.lastName ? newUser.lastName : "" %>" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <div class="form-group">
-            <label for="confirm-password">Confirm Password:</label>
-            <input type="password" id="confirm-password" name="confirmPassword" required>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Register">
-        </div>
-    </form>
-    <% if(errorMsg){
-        %><div id = "error-container"><%-errorMsg%></div><%
-    } %>
+  <h2 id="register-title">Register Now!</h2>
+  <a href="/auth/login">Have an account already? Click to Login!</a>
+  <form action="/auth/register" method="POST">
+    <div class="double-inputGroup">
+      <div class="form-group-register">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value="<%= newUser.email ? newUser.email : '' %>"
+          required
+        />
+      </div>
+      <div class="form-group-register">
+        <label for="userName">Unique Username</label>
+        <input type="text" id="username" name="username" required />
+      </div>
+    </div>
+    <div class="double-inputGroup">
+      <div class="form-group-register">
+        <label for="firstName">First Name</label>
+        <input
+          type="text"
+          id="firstName"
+          name="firstName"
+          value="<%= newUser.firstName ? newUser.firstName : '' %>"
+          required
+        />
+      </div>
+      <div class="form-group-register">
+        <label for="lastName">Last Name</label>
+        <input
+          type="text"
+          id="lastName"
+          name="lastName"
+          value="<%= newUser.lastName ? newUser.lastName : '' %>"
+        />
+      </div>
+    </div>
+    <div class="double-inputGroup">
+      <div class="form-group-register">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+      </div>
+      <div class="form-group-register">
+        <label for="confirm-password">Confirm Password</label>
+        <input
+          type="password"
+          id="confirm-password"
+          name="confirmPassword"
+          required
+        />
+      </div>
+    </div>
+    <div class="single-inputGroup">
+      <input type="submit" value="Register" id="registerbtn-form" />
+    </div>
+  </form>
+  <% if (errorMsg) { %>
+  <div class="error-container"><%- errorMsg %></div>
+  <% } %>
 </div>

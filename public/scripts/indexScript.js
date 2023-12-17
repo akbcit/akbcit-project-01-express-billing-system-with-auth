@@ -22,7 +22,7 @@ $(() => {
   }
 
   const homeText =
-    "Streamline your business with Express Billing by Iota – your all-in-one solution for client, product, and invoice management. Register with us to get started!";
+    "Streamline your business with Express Billing by Iota – Register with us to get started!";
 
   async function main() {
     // display text using typeWriter effect

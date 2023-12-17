@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const LocalStrategy = require("passport-local");
 const expressLayouts = require("express-ejs-layouts");
 const session = require("express-session");
+const flash = require("express-flash");
 const path = require("path");
 const indexRouter = require("./routers/indexRouter");
 const clientsRouter = require("./routers/clientsRouter");
@@ -30,6 +31,9 @@ app.use(cors({ origin: [/127.0.0.1.*/, /localhost.*/] }));
 // use bodyParser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Express flash middleware
+app.use(flash());
 
 // connect to mongoDB
 const uri = process.env.MONGO_CONNECTION_STRING;
@@ -62,6 +66,14 @@ app.use(expressLayouts);
 app.set("layout", "./layouts/full-width.ejs");
 // use public folder for static files
 app.use(express.static("public"));
+
+// error handling middleware
+app.use((err, req, res, next) => {
+  // log the error for debugging purposes
+  console.error(err);
+  // render an error page using an EJS template
+  res.status(500).render('error', { title:"Express Billing Project: Error",message: 'Internal Server Error' });
+});
 
 // use routers
 app.use("/",indexRouter);

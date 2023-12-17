@@ -15,17 +15,12 @@ const userSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
-    password: {
-      type: String,
-      required: true,
-    },
     firstName: {
       type: String,
       required: true,
     },
     lastName: {
       type: String,
-      required: true,
     },
     roles: {
       type: Array,
@@ -40,7 +35,7 @@ const userSchema = mongoose.Schema(
 userSchema.plugin(passportLocalMongoose);
 
 // create a User model using userSchema
-const User = mongoose.model("User",userSchema);
+const User = mongoose.model("User", userSchema, "users");
 
 // export the model
 module.exports = User;
