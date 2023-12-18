@@ -1,26 +1,39 @@
 <div id="user-profile">
-    <h2>Your Profile</h2>
-    <table>
-      <tr>
-        <td>Username:</td>
-        <td><%= user.username %></td>
-        <td><a href="/" id="">Edit</a></td>
-      </tr>
-      <tr>
-        <td>Email:</td>
-        <td><%= user.email %></td>
-        <td><a href="/">Edit</a></td>
-      </tr>
-      <tr>
-        <td>First Name:</td>
-        <td><%= user.firstName %></td>
-        <td><a href="/">Edit</a></td>
-      </tr>
-      <tr>
-        <td>Last Name:</td>
-        <td><%= user.lastName %></td>
-        <td><a href="/">Edit</a></td>
-      </tr>
-    </table>
+  <div id="dashboard-prompt">
+    <%if(authInfo.roles.length===0){
+      %><p>You have no roles assigned right now, please contact admin for help! If you have not reset your admin-generated password yet, please do so on priority!</p><%
+    }%>
   </div>
-  <script src="/scripts/userEditScript.js" defer></script>
+  <% if (message.error) { %>
+  <div class="error-container"><%= message.error %></div>
+  <% } %> <% if (message.success) { %>
+  <div class="success-container"><%= message.success %></div>
+  <% } %>
+  <h2>Your Profile</h2>
+  <table>
+    <tr>
+      <td>Username:</td>
+      <td><%= user.username %></td>
+      <td><a href="/" id="">Edit</a></td>
+    </tr>
+    <tr>
+      <td>Email:</td>
+      <td><%= user.email %></td>
+      <td><a href="/">Edit</a></td>
+    </tr>
+    <tr>
+      <td>First Name:</td>
+      <td><%= user.firstName %></td>
+      <td><a href="/">Edit</a></td>
+    </tr>
+    <tr>
+      <td>Last Name:</td>
+      <td><%= user.lastName %></td>
+      <td><a href="/">Edit</a></td>
+    </tr>
+  </table>
+  <a href="/auth/user/password-reset" id="password-reset-link"
+    >Click to reset password!</a
+  >
+</div>
+<script src="/scripts/userEditScript.js" defer></script>
