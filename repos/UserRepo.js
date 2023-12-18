@@ -1,26 +1,29 @@
 const User = require("../models/User");
 
 class UserRepo {
-// method to fetch user details 
-  async getUserDetails(id, details) {
-    console.log(`Fetching details for user ${id} from database!`);
-    const detailsObj = {
-      _id: details.includes("id"),
-      username: details.includes("username"),
-      email: details.includes("email"),
-      firstName: details.includes("firstName"),
-      lastName: details.includes("lastName"),
-    };
-    // find user
-    const userDetails = await User.findOne(
-      { _id: id },
-      detailsObj
+  // method to fetch user details
+  async getUserDetails(username, fieldsArray) {
+    console.log(
+      `Fetching details for ${fieldsArray} for user ${username} from the database!`
     );
-    if(userDetails){
-        return userDetails
-    }
-    else{
+    
+    const projection = fieldsArray.reduce((proj, field) => ({ ...proj, [field]: 1 }), {});
+    // find user
+    try {
+      const userDetails = await User.findOne(
+        { username: username },
+        projection 
+      );
+      
+      if (userDetails) {
+        console.log(userDetails);
+        return userDetails;
+      } else {
         return false;
+      }
+    } catch (err) {
+      console.log(err.message);
+      return false;
     }
   }
 }
