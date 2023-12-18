@@ -1,6 +1,6 @@
 <nav id="page-nav" role="navigation">
   <div id="nav-left">
-    <a href="/"><img src="../images/iota-logo.svg" alt="Site Logo" id="site-logo"></a>
+    <a href="/"><img src="/images/iota-logo.svg" alt="Site Logo" id="site-logo"></a>
   </div>
   <div id="nav-center">
     <% if (authInfo.authenticated) { %>
@@ -17,6 +17,9 @@
   </div>
   <div id="nav-right">
     <% if (authInfo.authenticated) { %>
+      <a class="nav-link" href="/auth/user" title="Dashboard">
+        <i class="bi bi-person-fill-gear fs-5" id="settings-btn"></i>
+      </a>      
       <a class="nav-link" href="/auth/logout">Logout</a>
     <% } else { %>
       <a class="nav-link" href="/auth/login">Login</a>

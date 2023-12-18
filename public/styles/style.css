@@ -1,10 +1,10 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
   position: relative;
 }
-
 
 body {
   background-image: url("../images/home-bg.png");
@@ -30,8 +30,8 @@ body {
   height: 1.6rem;
 }
 
-#site-logo path{
-  fill:black;
+#site-logo path {
+  fill: black;
 }
 
 #nav-left,
@@ -39,17 +39,17 @@ body {
 #nav-right {
   display: flex;
   flex-direction: row;
-  gap:0.5rem;
+  gap: 0.5rem;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
-  font-family: 'Viga', sans-serif;
+  font-family: "Viga", sans-serif;
   color: white;
   font-size: large;
   text-shadow: 7px 7px 7px rgba(0, 0, 0, 1);
 }
 
 #nav-left {
-    margin-left: 1rem;
+  margin-left: 1rem;
 }
 
 #nav-center {
@@ -59,7 +59,7 @@ body {
   margin-right: 1rem;
 }
 
-main{
+main {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -67,16 +67,15 @@ main{
   width: 100%;
 }
 
-#home-text{
-  font-family: 'Bungee', sans-serif;
+#home-text {
+  font-family: "Bungee", sans-serif;
   font-size: 3rem;
-  color:#FFFFFF;
+  color: #ffffff;
   margin: 10rem;
   text-align: center;
   text-shadow: 7px 7px 7px rgba(0, 0, 0, 1);
   font-weight: bold;
 }
-
 
 @keyframes floating {
   0% {
@@ -91,35 +90,35 @@ main{
 }
 
 #register-btn {
-  animation: floating 3s infinite; 
-  animation-play-state: running; 
+  animation: floating 3s infinite;
+  animation-play-state: running;
 }
 
 #register-btn {
   border: none;
   border-radius: 10px;
-  background-color: #ff9966; 
-  color: #fff; 
-  padding: 10px 20px; 
-  font-family: 'Viga', sans-serif;
+  background-color: #ff9966;
+  color: #fff;
+  padding: 10px 20px;
+  font-family: "Viga", sans-serif;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease; 
+  transition: background-color 0.3s ease;
   box-shadow: 4px 4px 6px rgba(0, 0, 0, 1);
 }
 
-#register-title{
+#register-title {
   text-align: center;
 }
 
 #register-btn:hover {
   background-color: #ff854d;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  animation-play-state: paused; 
+  animation-play-state: paused;
 }
 
 #site-footer {
-  font-family: 'Viga', sans-serif;
+  font-family: "Viga", sans-serif;
   color: white;
   font-size: small;
   width: 100%;
@@ -134,7 +133,7 @@ main{
 
 #registration-container {
   max-width: 600px;
-  font-family: 'Viga', sans-serif;
+  font-family: "Viga", sans-serif;
   margin: 0 auto;
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.9);
@@ -147,18 +146,18 @@ main{
   align-items: center;
 }
 
-.double-inputGroup{
+.double-inputGroup {
   display: flex;
   flex-direction: row;
-  gap:2rem;
+  gap: 2rem;
   justify-content: center;
   width: 100%;
 }
 
-.single-inputGroup{
+.single-inputGroup {
   display: flex;
   flex-direction: row;
-  gap:2rem;
+  gap: 2rem;
   justify-content: center;
 }
 
@@ -173,7 +172,9 @@ label {
   width: 100%;
 }
 
-input[type="text"], input[type="email"], input[type="password"] {
+input[type="text"],
+input[type="email"],
+input[type="password"] {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
@@ -196,15 +197,15 @@ input[type="submit"]:hover {
   background-color: #0056b3;
 }
 
-.error-container{
-margin-top: 5px;
-color: red;
-text-align: center;
+.error-container {
+  margin-top: 5px;
+  color: red;
+  text-align: center;
 }
 
 #login-container {
   max-width: 600px;
-  font-family: 'Viga', sans-serif;
+  font-family: "Viga", sans-serif;
   margin: 0 auto;
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.9);
@@ -217,9 +218,9 @@ text-align: center;
   align-items: center;
 }
 
-#error-page-container{
+#error-page-container {
   max-width: 600px;
-  font-family: 'Viga', sans-serif;
+  font-family: "Viga", sans-serif;
   margin: 0 auto;
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.9);
@@ -233,9 +234,9 @@ text-align: center;
   color: red;
 }
 
-#user-profile{
+#user-profile {
   width: 400px;
-  font-family: 'Viga', sans-serif;
+  font-family: "Viga", sans-serif;
   margin: 0 auto;
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.9);
@@ -247,7 +248,45 @@ text-align: center;
   justify-content: center;
 }
 
-.user-details{
+.user-details {
   display: flex;
-  flex-direction: row
+  flex-direction: row;
+}
+
+#password-reset-link {
+  text-align: center;
+}
+
+#reset-password-container {
+  max-width: 600px;
+  font-family: "Viga", sans-serif;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.success-container {
+  margin-top: 5px;
+  color: #198754;
+  text-align: center;
+}
+
+.password-guidelines{
+  text-align: center;
+  font-size: xx-small;
+  font-style: italic;
+}
+
+#dashboard-prompt{
+  text-align: center;
+  font-size: xx-small;
+  font-style: italic;
+  color: red;
 }

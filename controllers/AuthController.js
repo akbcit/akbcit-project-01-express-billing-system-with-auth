@@ -2,6 +2,7 @@ const User = require("../models/User");
 const passport = require("passport");
 const verifyAuth = require("../services/verifyAuth");
 const UserRepo = require("../repos/userRepo");
+const isPasswordSecure = require("../services/isPasswordSecure");
 
 // instantiate UserRepo
 const _userRepo = new UserRepo();
@@ -46,6 +47,15 @@ exports.RegisterUser = (req, res, next) => {
       authInfo: verifyAuth(req),
     });
   }
+  // check if password is secure
+  if (!isPasswordSecure(password)) {
+    return res.render("register", {
+      title: "Express Billing Project: Register",
+      errorMsg: "Password failed security requirements!",
+      newUser: newUser,
+      authInfo: verifyAuth(req),
+    });
+  }
   // else register user
   User.register(new User(newUser), password, (err, user) => {
     if (err) {
@@ -76,7 +86,9 @@ exports.RegisterUser = (req, res, next) => {
               return next(err);
             } else {
               // get user roles and attach those to session object
-              const data = await _userRepo.getUserDetails(user.username, ["roles"]);
+              const data = await _userRepo.getUserDetails(user.username, [
+                "roles",
+              ]);
               let sessionData = req.session;
               sessionData.roles = data.roles;
               // redirect to userpage
@@ -162,6 +174,11 @@ exports.LogoutUser = (req, res) => {
 
 // middleware to render user home page
 exports.UserProfile = async (req, res, next) => {
+  // retreive message, if any from req.flash
+  const errorMessage = req.flash("error")[0];
+  const successMessage = req.flash("success")[0];
+  console.log(successMessage);
+  console.log(errorMessage);
   // check if user is even logged in, if not redirect to login
   const authInfo = verifyAuth(req);
   const isAuthenticated = authInfo.authenticated;
@@ -182,6 +199,104 @@ exports.UserProfile = async (req, res, next) => {
     title: "Express Billing Project: User Info",
     user: userDetails,
     authInfo: authInfo,
+    message: errorMessage
+      ? { error: errorMessage }
+      : successMessage
+      ? { success: successMessage }
+      : {},
   });
   next();
+};
+
+// middleware for reset password form
+exports.PasswordResetForm = (req, res, next) => {
+  // check auth status
+  const authInfo = verifyAuth(req);
+  // if autheticated send the form
+  if (authInfo.authenticated) {
+    res.status(201).render("secure/user/reset-password", {
+      title: "Express Billing Project: Password Reset",
+      authInfo: authInfo,
+      errorMsg: "",
+    });
+  } else {
+    res.redirect("/auth/login");
+  }
+  next();
+};
+
+// middleware for resetting password
+exports.PasswordReset = async (req, res, next) => {
+  // check auth status
+  const authInfo = verifyAuth(req);
+  // if authenticated, send the form
+  if (authInfo.authenticated) {
+    // get data from the form
+    const currPassword = req.body.currentPassword;
+    const newPassword = req.body.newPasswordReset;
+    const newPasswordConfirm = req.body.confirmPasswordReset;
+    console.log(newPassword);
+    const username = authInfo.username;
+    // get user using username
+    try {
+      const user = await _userRepo.getUserByUsername(username);
+      if (!user) {
+        return res.status(404).render("secure/user/reset-password", {
+          title: "Express Billing Project: Password Reset",
+          authInfo: authInfo,
+          errorMsg: "Error getting user details from the database",
+        });
+      }
+
+      // check if current password matches
+      user.authenticate(currPassword, async (err, user) => {
+        if (err || !user) {
+          return res.status(401).render("secure/user/reset-password", {
+            title: "Express Billing Project: Password Reset",
+            authInfo: authInfo,
+            errorMsg: "Current Password is incorrect!",
+          });
+        }
+        // check if new password and confirmation match
+        if (newPassword !== newPasswordConfirm) {
+          return res.status(400).render("secure/user/reset-password", {
+            title: "Express Billing Project: Password Reset",
+            authInfo: authInfo,
+            errorMsg: "Passwords do not match!",
+          });
+        }
+        // check if password is secure
+        if (!isPasswordSecure(password)) {
+          return res.status(400).render("secure/user/reset-password", {
+            title: "Express Billing Project: Password Reset",
+            authInfo: authInfo,
+            errorMsg: "New password failed security requirements",
+          });
+        }
+        // reset password
+        try {
+          // passport-local-mongoose method to set new password
+          await user.changePassword(currPassword, newPassword);
+          req.flash("success", "Password changed successfully!");
+          return res.redirect("/auth/user");
+        } catch (err) {
+          console.error(`Error changing password: ${err.message}`);
+          return res.status(500).render("secure/user/reset-password", {
+            title: "Express Billing Project: Password Reset",
+            authInfo: authInfo,
+            errorMsg: "Internal error, please try again!",
+          });
+        }
+      });
+    } catch (err) {
+      console.error(`Error getting user from the database: ${err.message}`);
+      return res.status(404).render("secure/user/reset-password", {
+        title: "Express Billing Project: Password Reset",
+        authInfo: authInfo,
+        errorMsg: "Error getting user details from the database",
+      });
+    }
+  } else {
+    res.redirect("/auth/login");
+  }
 };
