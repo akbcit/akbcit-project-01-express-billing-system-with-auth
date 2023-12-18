@@ -1,0 +1,26 @@
+<nav id="page-nav" role="navigation">
+  <div id="nav-left">
+    <a href="/"><img src="../images/iota-logo.svg" alt="Site Logo" id="site-logo"></a>
+  </div>
+  <div id="nav-center">
+    <% if (authInfo.authenticated) { %>
+      <% if (authInfo.roles.includes("user")) { %>
+        <a class="nav-link" href="/products">Products</a>
+        <a class="nav-link" href="/invoices">Invoices</a>
+      <% } %>
+      <% if (authInfo.roles.includes("manager")) { %>
+        <a class="nav-link" href="/users">Users</a>
+      <% } %>
+    <% } else { %>
+      Welcome to Express Billing!
+    <% } %>
+  </div>
+  <div id="nav-right">
+    <% if (authInfo.authenticated) { %>
+      <a class="nav-link" href="/auth/logout">Logout</a>
+    <% } else { %>
+      <a class="nav-link" href="/auth/login">Login</a>
+      <a class="nav-link" href="/auth/register">Register</a>
+    <% } %>
+  </div>
+</nav>

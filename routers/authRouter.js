@@ -1,5 +1,5 @@
 const express = require("express");
-const {RegistrationForm,RegisterUser,LoginForm,LoginUser,UserHome,LogoutUser} = require("../controllers/AuthController");
+const {RegistrationForm,RegisterUser,LoginForm,LoginUser,UserProfile,LogoutUser} = require("../controllers/AuthController");
 const authRouter = express.Router();
 
 // route for rendering registration form
@@ -15,7 +15,7 @@ authRouter.get("/login",LoginForm);
 authRouter.post("/login",LoginUser);
 
 // route for user home
-authRouter.get("/user",UserHome);
+authRouter.get("/user",UserProfile);
 
 // route for logging out
 authRouter.get("/logout",LogoutUser);

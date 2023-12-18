@@ -1,11 +1,17 @@
 const User = require("../models/User");
 const passport = require("passport");
 const verifyAuth = require("../services/verifyAuth");
-const UserRepo = require("../repos/UserRepo");
+const UserRepo = require("../repos/userRepo");
+
+// instantiate UserRepo
+const _userRepo = new UserRepo();
 
 // middleware to render registration form
 exports.RegistrationForm = (req, res, next) => {
-  if (verifyAuth(req)) {
+  // check if user is even logged in, if not redirect to login
+  const authInfo = verifyAuth(req);
+  const isAuthenticated = authInfo.authenticated;
+  if (isAuthenticated) {
     // placeholder
     return res.send("logout first");
   }
@@ -13,7 +19,7 @@ exports.RegistrationForm = (req, res, next) => {
     title: "Express Billing Project: Register",
     errorMsg: "",
     newUser: {},
-    header: "genHeader",
+    authInfo: authInfo,
   });
   next();
 };
@@ -37,6 +43,7 @@ exports.RegisterUser = (req, res, next) => {
       title: "Express Billing Project: Register",
       errorMsg: "Passwords Don't Match!",
       newUser: newUser,
+      authInfo: verifyAuth(req),
     });
   }
   // else register user
@@ -54,7 +61,7 @@ exports.RegisterUser = (req, res, next) => {
         title: "Express Billing Project: Register",
         errorMsg: errorMsg,
         newUser: newUser,
-        header: "genHeader",
+        authInfo: verifyAuth(req),
       });
     } else {
       // login user
@@ -63,11 +70,15 @@ exports.RegisterUser = (req, res, next) => {
           // invoke error handling middleware
           return next(err);
         } else {
-          req.login(user, (err) => {
+          req.login(user, async (err) => {
             if (err) {
               // invoke error handling middleware
               return next(err);
             } else {
+              // get user roles and attach those to session object
+              const data = await _userRepo.getUserDetails(user.username, ["roles"]);
+              let sessionData = req.session;
+              sessionData.roles = data.roles;
               // redirect to userpage
               return res.redirect("/auth/user");
             }
@@ -80,7 +91,9 @@ exports.RegisterUser = (req, res, next) => {
 
 // middleware to render login form
 exports.LoginForm = (req, res, next) => {
-  if (verifyAuth(req)) {
+  const authInfo = verifyAuth(req);
+  const isAuthenticated = authInfo.authenticated;
+  if (isAuthenticated) {
     // placeholder
     return res.send("logout first");
   }
@@ -89,14 +102,16 @@ exports.LoginForm = (req, res, next) => {
   res.status(201).render("login", {
     title: "Express Billing Project: Login",
     errorMsg: errorMessage,
-    header: "genHeader",
+    authInfo: verifyAuth(req),
   });
   next();
 };
 
 // middleware to handle login requests
 exports.LoginUser = (req, res, next) => {
-  if (verifyAuth(req)) {
+  const authInfo = verifyAuth(req);
+  const isAuthenticated = authInfo.authenticated;
+  if (isAuthenticated) {
     return res.send("logout first");
   }
   passport.authenticate("local", (err, user) => {
@@ -109,11 +124,16 @@ exports.LoginUser = (req, res, next) => {
       req.flash("error", "Invalid username or password");
       return res.redirect("/auth/login");
     }
-    req.login(user, (err) => {
+    req.login(user, async (err) => {
       // handle session related errors
       if (err) {
         return next(err);
       }
+      // get user roles and attach those to session object
+      const data = await _userRepo.getUserDetails(user.username, ["roles"]);
+      let sessionData = req.session;
+      sessionData.roles = data.roles;
+      // redirect to userpage
       return res.redirect("/auth/user");
     });
   })(req, res, next);
@@ -122,7 +142,9 @@ exports.LoginUser = (req, res, next) => {
 // middleware to logout user
 exports.LogoutUser = (req, res) => {
   // check if user is even logged in, if not redirect to login
-  if (!verifyAuth(req)) {
+  const authInfo = verifyAuth(req);
+  const isAuthenticated = authInfo.authenticated;
+  if (!isAuthenticated) {
     return res.redirect("/auth/login");
   }
   // logout
@@ -139,25 +161,27 @@ exports.LogoutUser = (req, res) => {
 };
 
 // middleware to render user home page
-exports.UserHome = async (req, res, next) => {
+exports.UserProfile = async (req, res, next) => {
   // check if user is even logged in, if not redirect to login
-  if (!verifyAuth(req)) {
+  const authInfo = verifyAuth(req);
+  const isAuthenticated = authInfo.authenticated;
+  if (!isAuthenticated) {
     return res.redirect("/auth/login");
   }
-  const _userRepo = new UserRepo();
-  const id = req.user._id;
-  console.log(id);
-  const userDetails = await _userRepo.getUserDetails(id, [
+  const username = authInfo.username;
+  // populate userDetails
+  const userDetails = await _userRepo.getUserDetails(username, [
     "username",
     "email",
     "firstName",
     "lastName",
   ]);
+  console.log(authInfo);
   // render user home page
-  res.render("secure/user/userHome", {
-    title: "Express Billing Project: Register",
+  res.render("secure/user/dashboard", {
+    title: "Express Billing Project: User Info",
     user: userDetails,
-    header: "userHeader",
+    authInfo: authInfo,
   });
   next();
 };
