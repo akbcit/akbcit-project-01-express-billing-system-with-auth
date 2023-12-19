@@ -1,0 +1,55 @@
+<div id="user-details-container">
+    <h2>User Details</h2>
+    <% if (message.error) { %>
+    <div class="error-container">
+        <%= message.error %>
+    </div>
+    <% } %>
+    <% if (message.success) { %>
+    <div class="success-container">
+        <%= message.success %>
+    </div>
+    <% } %>
+    <table class="user-details-table">
+        <tr>
+            <td><strong>Username:</strong></td>
+            <td><%= user.username %></td>
+        </tr>
+        <tr>
+            <td><strong>Email:</strong></td>
+            <td><%= user.email %></td>
+        </tr>
+        <tr>
+            <td><strong>First Name:</strong></td>
+            <td><%= user.firstName %></td>
+        </tr>
+        <tr>
+            <td><strong>Last Name:</strong></td>
+            <td><%= user.lastName %></td>
+        </tr>
+        <tr>
+            <td><strong>Roles:</strong></td>
+            <td><%= user.roles && user.roles.length > 0 ? user.roles.join(", ") : '--' %></td>
+        </tr>
+        <tr>
+            <td><strong>Is Client:</strong></td>
+            <td><%= user.clientDetails && user.clientDetails.isClient ? 'Yes' : 'No' %></td>
+        </tr>
+        <% if (user.clientDetails && user.clientDetails.isClient) { %>
+        <tr>
+            <td><strong>Client Code:</strong></td>
+            <td><%= user.clientDetails.code ? user.clientDetails.code : '--' %></td>
+        </tr>
+        <tr>
+            <td><strong>Company:</strong></td>
+            <td><%= user.clientDetails.company ? user.clientDetails.company : '--' %></td>
+        </tr>
+        <% } %>
+    </table>
+    <div class="user-actions">
+        <a href="/users/<%= user.username %>/edit" class="edit-link">Edit</a>
+        <% if (authInfo.roles.includes("admin")) { %>
+        <a href="/users/<%= user.username %>/delete" class="delete-link">Delete</a>
+        <% } %>
+    </div>
+</div>

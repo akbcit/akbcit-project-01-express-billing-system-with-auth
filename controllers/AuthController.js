@@ -177,8 +177,6 @@ exports.UserProfile = async (req, res, next) => {
   // retreive message, if any from req.flash
   const errorMessage = req.flash("error")[0];
   const successMessage = req.flash("success")[0];
-  console.log(successMessage);
-  console.log(errorMessage);
   // check if user is even logged in, if not redirect to login
   const authInfo = verifyAuth(req);
   const isAuthenticated = authInfo.authenticated;
