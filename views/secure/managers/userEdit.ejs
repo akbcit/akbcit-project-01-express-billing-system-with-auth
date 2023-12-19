@@ -1,0 +1,66 @@
+<div id="user-edit-container">
+    <h2>Edit <%= `${user.username}'s`%> Details</h2>
+    <% if (message.error) { %>
+    <div class="error-container">
+        <%= message.error %>
+    </div>
+    <% } %>
+    <% if (message.success) { %>
+    <div class="success-container">
+        <%= message.success %>
+    </div>
+    <% } %>
+    <form action="/users/<%=user.username%>/edit" method="post" class="edit-user-form">
+        <table class="user-details-table">
+            <tr>
+                <td><strong>Username:</strong></td>
+                <td><input type="text" name="username" value="<%= user.username %>" required></td>
+            </tr>
+            <tr>
+                <td><strong>Email:</strong></td>
+                <td><input type="email" name="email" value="<%= user.email %>" required></td>
+            </tr>
+            <tr>
+                <td><strong>First Name:</strong></td>
+                <td><input type="text" name="firstName" value="<%= user.firstName %>" required></td>
+            </tr>
+            <tr>
+                <td><strong>Last Name:</strong></td>
+                <td><input type="text" name="lastName" value="<%= user.lastName %>"></td>
+            </tr>
+            <% if (authInfo.roles.includes("admin")) { %>
+                <tr>
+                    <td><strong>Roles:</strong></td>
+                    <td>
+                        <select name="roles">
+                            <option value="" <%= !user.roles || user.roles.length === 0 ? 'selected' : '' %>>None</option>
+                            <option value="user" <%= user.roles && user.roles.includes("user") ? 'selected' : '' %>>User</option>
+                            <option value="user,manager" <%= user.roles && user.roles.includes("manager") ? 'selected' : '' %>>Manager</option>
+                            <option value="user,manager,admin" <%= user.roles && user.roles.includes("admin") ? 'selected' : '' %>>Admin</option>
+                        </select>
+                    </td>
+                </tr>
+                <% } else { %>
+                    <input type="hidden" name="roles" value="<%= user.roles ? user.roles.join(',') : 'none' %>">
+                <% } %>
+            <tr>
+                <td><strong>Is Client:</strong></td>
+                <td>
+                    <input type="checkbox" name="isClient" <%= user.clientDetails && user.clientDetails.isClient ? 'checked' : '' %>>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Client Code:</strong></td>
+                <td><input type="text" name="clientCode" value="<%= user.clientDetails && user.clientDetails.isClient ? user.clientDetails.code || '' : '' %>"></td>
+            </tr>
+            <tr>
+                <td><strong>Client Company:</strong></td>
+                <td><input type="text" name="company" value="<%= user.clientDetails && user.clientDetails.isClient ? user.clientDetails.company || '' : '' %>"></td>
+            </tr>            
+        </table>
+        <div class="user-actions">
+            <button type="submit" class="edit-user-button">Save Changes</button>
+            <a href="/users/<%= user.username %>/delete" class="delete-link">Delete</a>
+        </div>
+    </form>
+</div>

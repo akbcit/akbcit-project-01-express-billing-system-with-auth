@@ -363,14 +363,17 @@ th, td {
   border-bottom: 1px solid #ddd;
 }
 
-tr:nth-child(even) {
+tr.even {
   background-color: #f2f2f2;
 }
 
-.edit-link, .delete-link {
+tr.odd {
+  background-color: #ffffff;
+}
+
+.edit-link, .delete-link,.view-link {
   padding: 5px 10px;
   margin-right: 5px;
-  background-color: #28a745;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -379,6 +382,62 @@ tr:nth-child(even) {
   display: inline-block; 
 }
 
-.edit-link:hover, .delete-link:hover {
+.edit-link, .view-link{
+  background-color: #28a745;
+}
+
+.delete-link{
+  background-color: #dc3545;
+}
+
+.edit-link:hover, .view-link:hover {
   background-color: #1e7e34;
 }
+
+.delete-link:hover{
+  background-color: #c82333;
+}
+
+#user-details-container {
+  width: 700px;
+  font-family: "Viga", sans-serif;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#user-edit-container {
+  width: 700px;
+  font-family: "Viga", sans-serif;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.edit-user-button {
+  background-color: #007bff; 
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.edit-user-button:hover {
+  background-color: #0056b3; 
+}
+

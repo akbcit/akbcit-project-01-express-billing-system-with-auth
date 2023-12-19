@@ -1,11 +1,21 @@
 <div id="userlist-container">
     <h2>Users</h2>
-    <% if (authInfo.roles.includes("admin")) { %>
-        <a href="/users/add" class="add-user-link">Add User</a>
+    <% if (message.error) { %>
+    <div class="error-container">
+        <%= message.error %>
+    </div>
     <% } %>
-    <form id="search-form" action="/users" method="get" >
+    <% if (message.success) { %>
+    <div class="success-container">
+        <%= message.success %>
+    </div>
+    <% } %>
+    <% if (authInfo.roles.includes("admin")) { %>
+    <a href="/users/add" class="add-user-link">Add User</a>
+    <% } %>
+    <form id="search-form" action="/users" method="get">
         <div class="search-container">
-            <input type="text" id="search-input" name="query" placeholder="Search by Name, Role, or Company">
+            <input type="text" id="search-input" name="query" placeholder="Search by Name, Role, or Company" />
             <button type="submit" id="search-button">Search</button>
         </div>
     </form>
@@ -13,45 +23,28 @@
         <tr>
             <th>Username</th>
             <th>Email</th>
-            <th>First Name</th>
-            <th>Last Name</th>
             <th>Roles</th>
-            <th>Client Details</th>
-            <th>Actions</th>
+            <th>Is Client</th>
+            <th></th>
         </tr>
         <% users.forEach(function(user) { %>
-            <tr>
-                <td><%= user.username %></td>
-                <td><%= user.email %></td>
-                <td><%= user.firstName %></td>
-                <td><%= user.lastName ? user.lastName : 'N/A' %></td>
-                <td><%= user.roles && user.roles.length > 0 ? user.roles.join(", ") : 'N/A' %></td>
-                <td>
-                    <strong>Is Client:</strong> <% if (user.clientDetails) { %>
-                        <%= user.clientDetails.isClient ? 'Yes' : 'No' %>, 
-                    <% } else { %>
-                        N/A
-                    <% } %>
-                    <br>
-                    <strong>Client Code:</strong> <% if (user.clientDetails) { %>
-                        <%= user.clientDetails.code ? user.clientDetails.code : 'N/A' %>, 
-                    <% } else { %>
-                        N/A
-                    <% } %>
-                    <br>
-                    <strong>Company:</strong> <% if (user.clientDetails) { %>
-                        <%= user.clientDetails.company ? user.clientDetails.company : 'N/A' %>
-                    <% } else { %>
-                        N/A
-                    <% } %>
-                </td>
-                <td>
-                    <% if (authInfo.roles.includes("admin")) { %>
-                        <a href="/users/<%= user.username %>/edit" class="edit-link">Edit</a>
-                        <a href="/users/<%= user.username %>/delete" class="delete-link">Delete</a>
-                    <% } %>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <%= user.username %>
+            </td>
+            <td>
+                <%= user.email %>
+            </td>
+            <td>
+                <%= user.roles && user.roles.length > 0 ? user.roles.join(", ") : '--' %>
+            </td>
+            <td>
+                <%= user.clientDetails && user.clientDetails.isClient ? 'Yes' : 'No' %>
+            </td>
+            <td>
+                <a href="/users/<%= user.username %>" class="view-link">View</a>
+            </td>
+        </tr>
         <% }); %>
     </table>
 </div>
