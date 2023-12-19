@@ -235,7 +235,7 @@ input[type="submit"]:hover {
 }
 
 #user-profile {
-  width: 400px;
+  width: 700px;
   font-family: "Viga", sans-serif;
   margin: 0 auto;
   padding: 20px;
@@ -289,4 +289,96 @@ input[type="submit"]:hover {
   font-size: xx-small;
   font-style: italic;
   color: red;
+}
+
+#userlist-container {
+  width: 1200px;
+  font-family: "Viga", sans-serif;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.add-user-link {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none; 
+  display: inline-block; 
+}
+
+.add-user-link:hover {
+  background-color: #0056b3;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#search-input {
+  flex: 1;
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+#search-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#search-button:hover {
+  background-color: #0056b3;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.edit-link, .delete-link {
+  padding: 5px 10px;
+  margin-right: 5px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none; 
+  display: inline-block; 
+}
+
+.edit-link:hover, .delete-link:hover {
+  background-color: #1e7e34;
 }

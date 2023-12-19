@@ -29,6 +29,7 @@ class UserRepo {
       return false;
     }
   }
+  // method to get user by username
   async getUserByUsername(username){
     try{
       console.log(`Getting user: ${username} from database`)
@@ -37,6 +38,26 @@ class UserRepo {
     }
     catch(err){
       console.log(`Unable to find user with username: ${username}`);
+      return false;
+    }
+  }
+  // method to get all users
+  async getAllUsers(sortOrder={firstName:1,lastName:1}){
+    try{
+      const users = await User.find({}).sort(sortOrder);
+      return users;
+    }catch(err){
+      console.log(`Error while fetching users from database: ${err.message}`);
+      return false;
+    }
+  }
+  // method to get users who are clients
+  async getAllClients(sortOrder={firstName:1,lastName:1,"clientDetails.company":1}){
+    try{
+      const clients = await User.find({"clientDetails.isClient":true}).sort(sortOrder);
+      return clients;
+    }catch(err){
+      console.log(`Error while fetching clients from database: ${err.message}`);
       return false;
     }
   }
