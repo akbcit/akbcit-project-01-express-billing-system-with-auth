@@ -195,7 +195,7 @@ exports.UserProfile = async (req, res, next) => {
   ]);
   console.log(authInfo);
   // render user home page
-  res.render("secure/user/dashboard", {
+  res.render("secure/users/dashboard", {
     title: "Express Billing Project: User Info",
     user: userDetails,
     authInfo: authInfo,
@@ -214,7 +214,7 @@ exports.PasswordResetForm = (req, res, next) => {
   const authInfo = verifyAuth(req);
   // if autheticated send the form
   if (authInfo.authenticated) {
-    res.status(201).render("secure/user/reset-password", {
+    res.status(201).render("secure/users/reset-password", {
       title: "Express Billing Project: Password Reset",
       authInfo: authInfo,
       errorMsg: "",
@@ -241,7 +241,7 @@ exports.PasswordReset = async (req, res, next) => {
     try {
       const user = await _userRepo.getUserByUsername(username);
       if (!user) {
-        return res.status(404).render("secure/user/reset-password", {
+        return res.status(404).render("secure/users/reset-password", {
           title: "Express Billing Project: Password Reset",
           authInfo: authInfo,
           errorMsg: "Error getting user details from the database",
@@ -251,7 +251,7 @@ exports.PasswordReset = async (req, res, next) => {
       // check if current password matches
       user.authenticate(currPassword, async (err, user) => {
         if (err || !user) {
-          return res.status(401).render("secure/user/reset-password", {
+          return res.status(401).render("secure/users/reset-password", {
             title: "Express Billing Project: Password Reset",
             authInfo: authInfo,
             errorMsg: "Current Password is incorrect!",
@@ -259,7 +259,7 @@ exports.PasswordReset = async (req, res, next) => {
         }
         // check if new password and confirmation match
         if (newPassword !== newPasswordConfirm) {
-          return res.status(400).render("secure/user/reset-password", {
+          return res.status(400).render("secure/users/reset-password", {
             title: "Express Billing Project: Password Reset",
             authInfo: authInfo,
             errorMsg: "Passwords do not match!",
@@ -267,7 +267,7 @@ exports.PasswordReset = async (req, res, next) => {
         }
         // check if password is secure
         if (!isPasswordSecure(password)) {
-          return res.status(400).render("secure/user/reset-password", {
+          return res.status(400).render("secure/users/reset-password", {
             title: "Express Billing Project: Password Reset",
             authInfo: authInfo,
             errorMsg: "New password failed security requirements",
@@ -281,7 +281,7 @@ exports.PasswordReset = async (req, res, next) => {
           return res.redirect("/auth/user");
         } catch (err) {
           console.error(`Error changing password: ${err.message}`);
-          return res.status(500).render("secure/user/reset-password", {
+          return res.status(500).render("secure/users/reset-password", {
             title: "Express Billing Project: Password Reset",
             authInfo: authInfo,
             errorMsg: "Internal error, please try again!",
@@ -290,7 +290,7 @@ exports.PasswordReset = async (req, res, next) => {
       });
     } catch (err) {
       console.error(`Error getting user from the database: ${err.message}`);
-      return res.status(404).render("secure/user/reset-password", {
+      return res.status(404).render("secure/users/reset-password", {
         title: "Express Billing Project: Password Reset",
         authInfo: authInfo,
         errorMsg: "Error getting user details from the database",

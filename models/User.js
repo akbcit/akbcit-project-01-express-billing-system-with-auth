@@ -25,9 +25,11 @@ const userSchema = mongoose.Schema(
     roles: {
       type: Array,
     },
-  },
-  {
-    collection: "users",
+    clientDetails:{
+      isClient:Boolean,
+      code:String,
+      company:String,
+    }
   }
 );
 

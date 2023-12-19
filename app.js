@@ -10,7 +10,7 @@ const session = require("express-session");
 const flash = require("express-flash");
 const path = require("path");
 const indexRouter = require("./routers/indexRouter");
-const clientsRouter = require("./routers/clientsRouter");
+const usersRouter = require("./routers/usersRouter");
 const productsRouter = require("./routers/productsRouter");
 const invoicesRouter = require("./routers/invoicesRouter");
 const authRouter = require("./routers/authRouter");
@@ -77,7 +77,7 @@ app.use((err, req, res, next) => {
 
 // use routers
 app.use("/",indexRouter);
-app.use("/clients",clientsRouter);
+app.use("/users",usersRouter);
 app.use("/products",productsRouter);
 app.use("/invoices",invoicesRouter);
 app.use("/auth",authRouter);
