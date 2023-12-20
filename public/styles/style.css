@@ -294,7 +294,7 @@ h2 {
   margin-bottom: 20px;
 }
 
-.add-user-link {
+.add-link {
   padding: 10px 20px;
   background-color: #007bff;
   color: #fff;
@@ -305,7 +305,7 @@ h2 {
   display: inline-block; 
 }
 
-.add-user-link:hover {
+.add-link:hover {
   background-color: #0056b3;
 }
 
@@ -404,7 +404,7 @@ tr.odd {
   justify-content: center;
 }
 
-.edit-user-button,.add-user-button {
+.edit-user-button,.add-button {
   background-color: #007bff; 
   color: white;
   padding: 5px 10px;
@@ -415,7 +415,34 @@ tr.odd {
   display: inline-block;
 }
 
-.edit-user-button:hover,.add-user-button:hover {
+.edit-user-button:hover,.add-button:hover {
   background-color: #0056b3; 
+}
+
+#productlist-container {
+  width: 1200px;
+  font-family: "Viga", sans-serif;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-container{
+  width: 700px;
+  font-family: "Viga", sans-serif;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 

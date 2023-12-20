@@ -1,0 +1,32 @@
+<div class="product-container">
+    <h2><%= purpose === "create" ? "Add new Product" : `Edit ${product.name}'s details` %></h2>
+    <% if (message.error) { %>
+        <div class="error-container">
+            <%= message.error %>
+        </div>
+    <% } %>
+    <% if (message.success) { %>
+        <div class="success-container">
+            <%= message.success %>
+        </div>
+    <% } %>
+    <form action=<%= purpose==="create"?"/products/create":`/products/${product.name}/edit`%> method="post">
+        <table class="product-details-table">
+            <tr>
+                <td><strong>Product Name:</strong></td>
+                <td><input type="text" name="name" value="<%= product.name ? product.name : "" %>" required></td>
+            </tr>
+            <tr>
+                <td><strong>Product Code:</strong></td>
+                <td><input type="text" name="code" value="<%= product.code ? product.code : "" %>" required></td>
+            </tr>
+            <tr>
+                <td><strong>Unit Cost (CAD):</strong></td>
+                <td><input type="text" name="unitCost" value="<%= product.unitCost ? product.unitCost : "" %>" required></td>
+            </tr>
+        </table>
+        <div class="product-actions">
+            <button type="submit" class="add-button"><%= purpose === "Create" ? "Add Product" : "Save Changes" %></button>
+        </div>
+    </form>
+</div>

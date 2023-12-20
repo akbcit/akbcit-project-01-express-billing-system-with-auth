@@ -191,7 +191,6 @@ exports.UserProfile = async (req, res, next) => {
     "firstName",
     "lastName",
   ]);
-  console.log(authInfo);
   // render user home page
   res.render("secure/users/dashboard", {
     title: "Express Billing Project: User Info",

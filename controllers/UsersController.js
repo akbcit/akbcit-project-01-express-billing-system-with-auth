@@ -17,7 +17,6 @@ exports.GetAllUsers = async (req, res, next) => {
     if (authInfo.rolePermitted) {
       // check if there is any search term
       const searchPhrase = req.query.query;
-      console.log(searchPhrase);
       // retreive message, if any from req.flash
       const errorMessage = req.flash("error")[0];
       const successMessage = req.flash("success")[0];
@@ -116,7 +115,6 @@ exports.UserDetails = async (req, res, next) => {
       const successMessage = req.flash("success")[0];
       // get username
       const username = req.params.username;
-      console.log(username);
       // get user by username and send to view
       const user = await _userRepo.getUserByUsername(username);
       if (user) {
@@ -346,7 +344,6 @@ exports.EditUser = async (req, res, next) => {
       }
       // else send the details to repo for update
       const response = await _userRepo.editUser(username, editedUser);
-      console.log(response);
       if (response.includes("Error")) {
         // render the form agan with error
         const errorMessage = response;

@@ -1,0 +1,37 @@
+<div id="product-details-container" class="product-container">
+    <h2>Product Details</h2>
+    <% if (message.error) { %>
+    <div class="error-container">
+        <%= message.error %>
+    </div>
+    <% } %>
+    <% if (message.success) { %>
+    <div class="success-container">
+        <%= message.success %>
+    </div>
+    <% } %>
+    <table class="product-details-table">
+        <tr>
+            <td><strong>ID:</strong></td>
+            <td><%= product.id %></td>
+        </tr>
+        <tr>
+            <td><strong>Name:</strong></td>
+            <td><%= product.name %></td>
+        </tr>
+        <tr>
+            <td><strong>Code:</strong></td>
+            <td><%= product.code %></td>
+        </tr>
+        <tr>
+            <td><strong>Cost:</strong></td>
+            <td>$<%= product.unitCost %></td>
+        </tr>
+    </table>
+    <div class="product-actions">
+        <% if (authInfo.roles.includes("admin")||authInfo.roles.includes("manager")) { %>
+        <a href="/products/<%= product.name %>/edit" class="edit-link">Edit</a>
+        <a href="/products/<%= product.name %>/delete" class="delete-link">Delete</a>
+        <% } %>
+    </div>
+</div>
