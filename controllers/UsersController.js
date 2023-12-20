@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const verifyAuth = require("../services/verifyAuth");
 const UserRepo = require("../repos/userRepo");
+const isPasswordSecure = require("../services/isPasswordSecure");
 
 // instantiate UserRepo
 const _userRepo = new UserRepo();
@@ -77,6 +78,125 @@ exports.UserDetails = async (req, res, next) => {
         req.flash("error", `Could not find/load ${username}`);
         return res.redirect("/users");
       }
+    }
+  } else {
+    return res.redirect("/auth/login");
+  }
+};
+
+// middleware to display Add user form
+exports.CreateUserForm = (req, res, next) => {
+  const rolesPermitted = ["admin"];
+  // get authInfo
+  const authInfo = verifyAuth(req, rolesPermitted);
+  // check if authenticated
+  if (authInfo.authenticated) {
+    // check if role is permitted
+    if (authInfo.rolePermitted) {
+      // retreive message, if any from req.flash
+      const errorMessage = req.flash("error")[0];
+      const successMessage = req.flash("success")[0];
+      // render form
+      return res.render("secure/admins/userCreate", {
+        title: "Express Billing Project: Create User",
+        authInfo: authInfo,
+        user: {},
+        message: errorMessage
+          ? { error: errorMessage }
+          : successMessage
+          ? { success: successMessage }
+          : {},
+      });
+    } else {
+      return res.redirect("/auth/user");
+    }
+  } else {
+    return res.redirect("/auth/login");
+  }
+};
+
+// middleware to Create a new User
+exports.CreateUser = async (req, res, next) => {
+  const rolesPermitted = ["admin"];
+  // get authInfo
+  const authInfo = verifyAuth(req, rolesPermitted);
+  // check if authenticated
+  if (authInfo.authenticated) {
+    // check if role is permitted
+    if (authInfo.rolePermitted) {
+      // create a new user object
+      const newUser = {
+        username: req.body.username,
+        email: req.body.email,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        roles: req.body.roles ? req.body.roles.split(",") : [],
+        clientDetails: {
+          isClient: req.body.isClient === "on" ? true : false,
+          code: req.body.clientCode,
+          company: req.body.company,
+        },
+      };
+      // check if passwords match
+      if (req.body.password !== req.body.confirmPassword) {
+        const errorMessage =
+          "Passwords don't match!";
+        // render create form
+        return res.render("secure/admins/userCreate", {
+          title: "Express Billing Project: Create User",
+          authInfo: authInfo,
+          user: newUser,
+          message: { error: errorMessage },
+        });
+      }
+      // check if password meets security requirements
+      if(!isPasswordSecure(req.body.password)){
+        const errorMessage =
+          "Password does not meet securtiy requirements!";
+        // render create form
+        return res.render("secure/admins/userCreate", {
+          title: "Express Billing Project: Create User",
+          authInfo: authInfo,
+          user: newUser,
+          message: { error: errorMessage },
+        });
+      }
+      // validation if isClient is unchecked but client details were submitted
+      if (
+        !newUser.clientDetails.isClient &&
+        (newUser.clientDetails.code || newUser.clientDetails.company)
+      ) {
+        const errorMessage =
+          "Please check 'Is Client' if you want to add Client details!";
+        // render create form
+        return res.render("secure/admins/userCreate", {
+          title: "Express Billing Project: Create User",
+          authInfo: authInfo,
+          user: newUser,
+          message: { error: errorMessage },
+        });
+      } else {
+        // send newUser to repo
+        const response = await _userRepo.createUser(newUser);
+        if (response.includes("Error")) {
+          // render create form
+          return res.render("secure/admins/userCreate", {
+            title: "Express Billing Project: Create User",
+            authInfo: authInfo,
+            user: newUser,
+            message: { error: `${response}: Please ensure unique username, email and only alphabets in name!` },
+          });
+        } else {
+          // add message to req.flash and render users page
+          req.flash(
+            "success",
+            `New User: ${newUser.username} created successfully!`
+          );
+          return res.redirect("/users");
+        }
+      }
+    } else {
+      return res.redirect("/auth/user");
     }
   } else {
     return res.redirect("/auth/login");

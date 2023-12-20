@@ -233,21 +233,6 @@ input[type="submit"]:hover {
   align-items: center;
   color: red;
 }
-
-#user-profile {
-  width: 700px;
-  font-family: "Viga", sans-serif;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 .user-details {
   display: flex;
   flex-direction: row;
@@ -398,7 +383,7 @@ tr.odd {
   background-color: #c82333;
 }
 
-#user-details-container {
+.user-container {
   width: 700px;
   font-family: "Viga", sans-serif;
   margin: 0 auto;
@@ -412,21 +397,13 @@ tr.odd {
   justify-content: center;
 }
 
-#user-edit-container {
-  width: 700px;
-  font-family: "Viga", sans-serif;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-  margin: auto;
+.user-actions{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
 }
 
-.edit-user-button {
+.edit-user-button,.add-user-button {
   background-color: #007bff; 
   color: white;
   padding: 5px 10px;
@@ -437,7 +414,7 @@ tr.odd {
   display: inline-block;
 }
 
-.edit-user-button:hover {
+.edit-user-button:hover,.add-user-button:hover {
   background-color: #0056b3; 
 }
 
