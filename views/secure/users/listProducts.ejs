@@ -10,7 +10,7 @@
             <%= message.success %>
         </div>
     <% } %>
-    <% if (authInfo.roles.includes("manager") || authInfo.roles.includes("admin")) { %>
+    <% if (authInfo.roles.includes("admin")) { %>
         <a href="/products/create" class="add-link">Add Product</a>
     <% } %>
     <form id="search-form" action="/products" method="get">
@@ -32,9 +32,11 @@
                 <td>
                     <a href="/products/<%= product.name %>"><%= product.name %></a>
                 </td>
-                <td>
-                    <a href="/products/<%= product.name %>/delete" class="delete-link">Delete</a>
-                </td>
+                <% if (authInfo.roles.includes("admin")) { %>
+                    <td>
+                        <a href="/products/<%= product.name %>/delete" class="delete-link">Delete</a>
+                    </td>
+                <% } %>
             </tr>
             <% }); %>
         </table>
