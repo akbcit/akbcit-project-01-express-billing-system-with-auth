@@ -66,6 +66,30 @@ class UserRepo {
     }
   }
 
+  // method to create user
+  async createUser(newUser,password) {
+    try {
+      const newUserDoc = await User.create(newUser);
+      // check if the doc adheres to schema
+      const error = await newUserDoc.validate();
+      // if error quit and send error as response
+      if (error) {
+        console.log("error while validating new user's details", error);
+        return `Error while creating user ${newUser.username}`;
+      }
+      // else save document
+      console.log("saving user record");
+      await newUserDoc.save();
+      // setpassword
+      newUserDoc.setPassword(password);
+      // return id of new client
+      return `User ${newUser.username} created successfully`;
+    } catch (err) {
+      console.log(`Error while creating user: ${err}`);
+      return `Error while creating user ${newUser.username}`;
+    }
+  }
+
   // method to edit user
   async editUser(username, editedUser) {
     try {

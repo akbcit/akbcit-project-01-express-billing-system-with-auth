@@ -1,5 +1,6 @@
-<div id="user-edit-container" class="user-container">
-    <h2>Edit <%= `${user.username}'s`%> Details</h2>
+<div class="user-container">
+    <h2>Add New User</h2>
+    <p class = "password-guidelines">Make sure the password includes at least 8 characters, a mix of uppercase and lowercase letters, and at least one number or special character for added security.</p>
     <% if (message.error) { %>
     <div class="error-container">
         <%= message.error %>
@@ -10,39 +11,43 @@
         <%= message.success %>
     </div>
     <% } %>
-    <form action="/users/<%=user.username%>/edit" method="post" class="edit-user-form">
+    <form action="/users/create" method="post">
         <table class="user-details-table">
             <tr>
                 <td><strong>Username:</strong></td>
-                <td><input type="text" name="username" value="<%= user.username %>" required></td>
+                <td><input type="text" name="username" value="<%= user.username?user.username:"" %>" required></td>
             </tr>
             <tr>
                 <td><strong>Email:</strong></td>
-                <td><input type="email" name="email" value="<%= user.email %>" required></td>
+                <td><input type="email" name="email" value="<%= user.email?user.email:"" %>" required></td>
+            </tr>
+            <tr>
+                <td><strong>Password:</strong></td>
+                <td><input type="password" name="password" required></td>
+            </tr>
+            <tr>
+                <td><strong>Confirm Password:</strong></td>
+                <td><input type="password" name="confirmPassword" required></td>
             </tr>
             <tr>
                 <td><strong>First Name:</strong></td>
-                <td><input type="text" name="firstName" value="<%= user.firstName %>" required></td>
+                <td><input type="text" name="firstName" value="<%= user.firstName?user.firstName:"" %>" required></td>
             </tr>
             <tr>
                 <td><strong>Last Name:</strong></td>
-                <td><input type="text" name="lastName" value="<%= user.lastName %>"></td>
+                <td><input type="text" name="lastName" value="<%= user.lastName?user.lastName:"" %>"></td>
             </tr>
-            <% if (authInfo.roles.includes("admin")) { %>
                 <tr>
                     <td><strong>Roles:</strong></td>
                     <td>
                         <select name="roles">
                             <option value="" <%= !user.roles || user.roles.length === 0 ? 'selected' : '' %>>None</option>
-                            <option value="user" <%= user.roles && user.roles.includes("user") &&!user.roles.includes("manager")&&!user.roles.includes("admin") ? 'selected' : '' %>>User</option>
-                            <option value="user,manager" <%= user.roles && user.roles.includes("manager") &&!user.roles.includes("admin") ? 'selected' : '' %>>Manager</option>
+                            <option value="user" <%= user.roles && user.roles.includes("user") &&!user.roles.includes("manager")&&!user.roles.includes("admin")? 'selected' : '' %>>User</option>
+                            <option value="user,manager" <%= user.roles && user.roles.includes("manager") &&!user.roles.includes("admin")? 'selected' : '' %>>Manager</option>
                             <option value="user,manager,admin" <%= user.roles && user.roles.includes("admin") ? 'selected' : '' %>>Admin</option>
                         </select>
                     </td>
                 </tr>
-                <% } else { %>
-                    <input type="hidden" name="roles" value="<%= user.roles ? user.roles.join(',') : 'none' %>">
-                <% } %>
             <tr>
                 <td><strong>Is Client:</strong></td>
                 <td>
@@ -59,8 +64,7 @@
             </tr>            
         </table>
         <div class="user-actions">
-            <button type="submit" class="edit-user-button">Save Changes</button>
-            <a href="/users/<%= user.username %>/delete" class="delete-link">Delete</a>
+            <button type="submit" class="add-user-button">Add User</button>
         </div>
     </form>
 </div>
