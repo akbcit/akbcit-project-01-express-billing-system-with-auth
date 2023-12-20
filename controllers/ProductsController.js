@@ -90,7 +90,7 @@ exports.ProductDetails = async (req, res, next) => {
 };
 
 exports.CreateProductForm = (req, res, next) => {
-    const rolesPermitted = ["admin", "manager"];
+    const rolesPermitted = ["admin"];
     // check auth status
     const authInfo = verifyAuth(req, rolesPermitted);
     // check if authenticated
@@ -101,7 +101,7 @@ exports.CreateProductForm = (req, res, next) => {
             const errorMessage = req.flash("error")[0];
             const successMessage = req.flash("success")[0];
             // render form
-            return res.render("secure/managers/productCreateEdit", {
+            return res.render("secure/admins/productCreateEdit", {
                 title: "Express Billing Project: Product Create",
                 purpose: "create",
                 authInfo: authInfo,
@@ -121,7 +121,7 @@ exports.CreateProductForm = (req, res, next) => {
 };
 
 exports.CreateProduct = async (req, res, next) => {
-    const rolesPermitted = ["admin", "manager"];
+    const rolesPermitted = ["admin"];
     // check auth status
     const authInfo = verifyAuth(req, rolesPermitted);
     // check if authenticated
@@ -140,7 +140,7 @@ exports.CreateProduct = async (req, res, next) => {
             // Check if the parsed price is a valid number
             if (isNaN(req.body.unitCost)) {
                 errorMessage = "UnitCost needs to be decimal!";
-                return res.status(400).render("secure/managers/productCreateEdit", {
+                return res.status(400).render("secure/admins/productCreateEdit", {
                     title: "Express Billing Project: Product Create",
                     purpose: "create",
                     authInfo: authInfo,
@@ -181,7 +181,7 @@ exports.CreateProduct = async (req, res, next) => {
 };
 
 exports.EditProductForm = async (req, res, next) => {
-    const rolesPermitted = ["admin", "manager"];
+    const rolesPermitted = ["admin"];
     // check auth status
     const authInfo = verifyAuth(req, rolesPermitted);
     // check if authenticated
@@ -200,7 +200,7 @@ exports.EditProductForm = async (req, res, next) => {
                 return res.status(500).redirect("/products");
             }
             // else render form
-            return res.render("secure/managers/productCreateEdit", {
+            return res.render("secure/admins/productCreateEdit", {
                 title: `Express Billing Project: Product ${productName} Edit`,
                 purpose: "edit",
                 authInfo: authInfo,
@@ -216,7 +216,7 @@ exports.EditProductForm = async (req, res, next) => {
 };
 
 exports.EditProduct = async (req, res, next) => {
-    const rolesPermitted = ["admin", "manager"];
+    const rolesPermitted = ["admin"];
     // check auth status
     const authInfo = verifyAuth(req, rolesPermitted);
     // check if authenticated
@@ -236,7 +236,7 @@ exports.EditProduct = async (req, res, next) => {
             };
             if (isNaN(req.body.unitCost)) {
                 // render form again
-                return res.status(500).render("secure/managers/productCreateEdit", {
+                return res.status(500).render("secure/admin/productCreateEdit", {
                     title: `Express Billing Project: Product ${productName} Edit`,
                     purpose: "edit",
                     authInfo: authInfo,
@@ -268,7 +268,7 @@ exports.EditProduct = async (req, res, next) => {
 };
 
 exports.DeleteProduct = async (req, res, next) => {
-    const rolesPermitted = ["admin", "manager"];
+    const rolesPermitted = ["admin"];
     // check auth status
     const authInfo = verifyAuth(req, rolesPermitted);
     // check if authenticated

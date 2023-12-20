@@ -29,7 +29,7 @@
         </tr>
     </table>
     <div class="product-actions">
-        <% if (authInfo.roles.includes("admin")||authInfo.roles.includes("manager")) { %>
+        <% if (authInfo.roles.includes("admin")) { %>
         <a href="/products/<%= product.name %>/edit" class="edit-link">Edit</a>
         <a href="/products/<%= product.name %>/delete" class="delete-link">Delete</a>
         <% } %>
