@@ -64,7 +64,7 @@ exports.RegisterUser = (req, res, next) => {
         errorMsg = "Error Registering : Email or username already exists!";
       } else {
         console.log(err.message);
-        errorMsg = "Error Registering : Please try again!";
+        errorMsg = "Error Registering : Please try again and ensure unique username and email!";
       }
       // render login page again
       res.render("register", {
@@ -249,6 +249,8 @@ exports.PasswordReset = async (req, res, next) => {
       // check if current password matches
       user.authenticate(currPassword, async (err, user) => {
         if (err || !user) {
+          console.log(err);
+          console.log(user);
           return res.status(401).render("secure/users/reset-password", {
             title: "Express Billing Project: Password Reset",
             authInfo: authInfo,
@@ -264,7 +266,7 @@ exports.PasswordReset = async (req, res, next) => {
           });
         }
         // check if password is secure
-        if (!isPasswordSecure(password)) {
+        if (!isPasswordSecure(newPassword)) {
           return res.status(400).render("secure/users/reset-password", {
             title: "Express Billing Project: Password Reset",
             authInfo: authInfo,

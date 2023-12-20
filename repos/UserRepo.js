@@ -41,9 +41,9 @@ class UserRepo {
     }
   }
   // method to get all users
-  async getAllUsers(sortOrder = { firstName: 1, lastName: 1 }) {
+  async getAllUsers(filter={},sortOrder = { firstName: 1, lastName: 1 }) {
     try {
-      const users = await User.find({}).sort(sortOrder);
+      const users = await User.find(filter).sort(sortOrder);
       return users;
     } catch (err) {
       console.log(`Error while fetching users from database: ${err.message}`);
@@ -69,27 +69,15 @@ class UserRepo {
   // method to create user
   async createUser(newUser,password) {
     try {
-      const newUserDoc = await User.create(newUser);
-      // check if the doc adheres to schema
-      const error = await newUserDoc.validate();
-      // if error quit and send error as response
-      if (error) {
-        console.log("error while validating new user's details", error);
-        return `Error while creating user ${newUser.username}`;
-      }
-      // else save document
-      console.log("saving user record");
-      await newUserDoc.save();
-      // setpassword
-      newUserDoc.setPassword(password);
-      // return id of new client
-      return `User ${newUser.username} created successfully`;
+      // Register user
+      console.log("registering user");
+      await User.register(new User(newUser),password);  
+      return `${newUser.username} created and registered successfully!`;
     } catch (err) {
       console.log(`Error while creating user: ${err}`);
       return `Error while creating user ${newUser.username}`;
     }
   }
-
   // method to edit user
   async editUser(username, editedUser) {
     try {
@@ -104,7 +92,7 @@ class UserRepo {
       console.log(`saving updated doc for ${username}`);
       await userDoc.save();
       // return success message
-      return `${username}'s records updated successfully`;
+      return `${editedUser.username}'s records updated successfully`;
     } catch (err) {
       console.log(`Error while updating: ${err.message}`);
       return `Error while updating ${username}`;
