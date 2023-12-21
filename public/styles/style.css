@@ -24,6 +24,7 @@ body {
   align-items: center;
   background-color: transparent;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
 }
 
 #site-logo {
@@ -57,6 +58,50 @@ body {
 
 #nav-right {
   margin-right: 1rem;
+}
+
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: "Viga", sans-serif;
+  color: white;
+  text-shadow: 7px 7px 7px rgba(0, 0, 0, 1);
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: transparent;
+  backdrop-filter: blur(5px);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  right: 0;
+  min-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.dropdown-item {
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #333;
+  display: block;
+}
+
+.dropdown:hover .dropdown-menu,
+.dropdown:focus-within .dropdown-menu {
+  display: block;
 }
 
 main {
@@ -129,6 +174,7 @@ main {
   height: 1.5rem;
   background-color: rgba(0, 0, 0, 0.5);
   margin: 0;
+  margin-top: 10px;
 }
 
 #registration-container {
@@ -263,13 +309,13 @@ input[type="submit"]:hover {
   text-align: center;
 }
 
-.password-guidelines{
+.password-guidelines {
   text-align: center;
   font-size: xx-small;
   font-style: italic;
 }
 
-#dashboard-prompt{
+#dashboard-prompt {
   text-align: center;
   font-size: xx-small;
   font-style: italic;
@@ -301,8 +347,8 @@ h2 {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  text-decoration: none; 
-  display: inline-block; 
+  text-decoration: none;
+  display: inline-block;
 }
 
 .add-link:hover {
@@ -343,7 +389,8 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #ddd;
@@ -357,30 +404,34 @@ tr.odd {
   background-color: #ffffff;
 }
 
-.edit-link, .delete-link,.view-link {
+.edit-link,
+.delete-link,
+.view-link {
   padding: 5px 10px;
   margin-right: 5px;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  text-decoration: none; 
-  display: inline-block; 
+  text-decoration: none;
+  display: inline-block;
 }
 
-.edit-link, .view-link{
+.edit-link,
+.view-link {
   background-color: #28a745;
 }
 
-.delete-link{
+.delete-link {
   background-color: #dc3545;
 }
 
-.edit-link:hover, .view-link:hover {
+.edit-link:hover,
+.view-link:hover {
   background-color: #1e7e34;
 }
 
-.delete-link:hover{
+.delete-link:hover {
   background-color: #c82333;
 }
 
@@ -398,14 +449,15 @@ tr.odd {
   justify-content: center;
 }
 
-.user-actions{
+.user-actions {
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-.edit-user-button,.add-button {
-  background-color: #007bff; 
+.edit-user-button,
+.add-button {
+  background-color: #007bff;
   color: white;
   padding: 5px 10px;
   border: none;
@@ -415,8 +467,9 @@ tr.odd {
   display: inline-block;
 }
 
-.edit-user-button:hover,.add-button:hover {
-  background-color: #0056b3; 
+.edit-user-button:hover,
+.add-button:hover {
+  background-color: #0056b3;
 }
 
 #productlist-container {
@@ -432,7 +485,7 @@ tr.odd {
   align-items: center;
 }
 
-.product-container{
+.product-container {
   width: 700px;
   font-family: "Viga", sans-serif;
   margin: 0 auto;
@@ -446,3 +499,266 @@ tr.odd {
   justify-content: center;
 }
 
+#invoicelist-container {
+  width: 1200px;
+  font-family: "Viga", sans-serif;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.invoice-container {
+  width: 900px;
+  font-family: "Viga", sans-serif;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h2 {
+  text-align: center;
+}
+
+#invoice-create-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#add-new-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+  height: 1.5rem;
+  width: 1.5rem;
+  background-color: #28a745;
+  color: white;
+  text-align: center;
+  line-height: 1.5rem;
+  vertical-align: middle;
+  align-self: center;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+#add-new-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+}
+
+#add-new-item:active {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: scale(0.9);
+}
+
+#line-items-heading {
+  margin-top: 2rem;
+}
+
+#line-items-list {
+  margin-top: 2rem;
+}
+
+.remove-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: bold;
+  height: 1.5rem;
+  width: 1.5rem;
+  background-color: #dc3545;
+  color: white;
+  text-align: center;
+  line-height: 1.5rem;
+  vertical-align: middle;
+  align-self: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.remove-btn:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+}
+
+.remove-btn:active {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: scale(0.9);
+}
+
+.line-items-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 23.8rem;
+}
+
+#invoice-submit {
+  margin-top: 1rem;
+}
+
+#cost-label {
+  margin: 0;
+  font-weight: bold;
+}
+
+#invoice-details-form {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+#invoice-client {
+  width: 10rem;
+}
+
+#add-lineItems {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+}
+
+#product-qty {
+  width: 4rem;
+}
+
+#product-cost {
+  margin-top: 7px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* styling for viewing individual invoice details */
+/* styling for the header section */
+
+#invoice-details-page{
+  height: 120%;
+  width: 42%;
+  background-color: white;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#invoice-details-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  max-width: 600px;
+  height: 800px;
+}
+
+#invoice-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  white-space: nowrap;
+}
+
+#invoice-logo{
+  height: 2.5rem;
+}
+
+.company-info {
+  flex: 1;
+  text-align: left;
+  line-height: 0.5rem;
+  margin-left: 0.5rem;
+}
+.logo-and-info {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+#invoice-number {
+  display: inline;
+  margin: 0;
+  text-align: right;
+  align-self: flex-start;
+}
+
+h7{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  white-space: nowrap;
+  margin-top: 20px;
+  font-size: 30px;
+}
+
+/* overall styling for the summary, billable-details, and payment-details section */
+.summary,
+.billable-details,
+.payment-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  white-space: nowrap;
+}
+
+/* styling for invoice details */
+.invoice-.invoice-details-pay,
+.invoice-details-pay,
+.invoice-details-due-date,
+h5 {
+  text-align: center;
+}
+
+/* styling for the billable-details section */
+.table th.qty,
+.table th.rate,
+.table th.amount {
+  text-align: right;
+}
+
+.table td.qty,
+.table td.rate,
+.table td.amount {
+  text-align: right;
+}
+
+.table th.item {
+  text-align: left;
+}
+
+.payment-summary-2 {
+  text-align: right;
+}
+
+/* Hiding the navbar and return to invoices button when printing */
+@media print {
+  .hide-for-print {
+    display: none;
+  }
+  #invoice-details-page{
+    box-shadow: none;
+  }
+}

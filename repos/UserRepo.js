@@ -33,10 +33,22 @@ class UserRepo {
   async getUserByUsername(username) {
     try {
       console.log(`Getting user: ${username} from database`);
-      const user = User.findOne({ username: username });
+      const user = await User.findOne({ username: username });
       return user;
     } catch (err) {
       console.log(`Unable to find user with username: ${username}`);
+      return false;
+    }
+  }
+
+   // method to get user by id
+   async getUserById(id) {
+    try {
+      console.log(`Getting user: ${id} from database`);
+      const user = await User.findById(id);
+      return user;
+    } catch (err) {
+      console.log(`Unable to find user with id: ${id}`);
       return false;
     }
   }

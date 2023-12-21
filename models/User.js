@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
+const Product = require("../models/Product");
 
 // validation and processing methods
 const toSentenceCase = (str) => {
@@ -42,7 +43,10 @@ const userSchema = mongoose.Schema(
       type: Array,
     },
     clientDetails:{
-      isClient:Boolean,
+      isClient:{
+        type:Boolean,
+        default:false,
+      },
       code:String,
       company:String,
     }
@@ -54,6 +58,23 @@ userSchema.plugin(passportLocalMongoose);
 
 // create a User model using userSchema
 const User = mongoose.model("User", userSchema, "users");
+
+// establish a change stream
+const changeStream = User.watch();
+
+changeStream.on('change', async (change) => {
+  if (change.operationType === 'update' && change.updateDescription.updatedFields.username) {
+    // retrieve the ID of the user whose username has been updated
+    const updatedUserId = change.documentKey._id;
+    // retrieve the new username
+    const newUsername = change.updateDescription.updatedFields.username;
+    // update the username in related invoices
+    await Invoice.updateMany(
+      { 'client.id': updatedUserId },
+      { 'client.username': newUsername }
+    );
+  }
+});
 
 // export the model
 module.exports = User;

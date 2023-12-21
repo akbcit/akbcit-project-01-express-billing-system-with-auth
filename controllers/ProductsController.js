@@ -1,6 +1,6 @@
 const Product = require("../models/Product");
-const verifyAuth = require("../services/verifyAuth");
 const ProducRepo = require("../repos/productRepo");
+const verifyAuth = require("../services/verifyAuth");
 
 const _productRepo = new ProducRepo();
 
