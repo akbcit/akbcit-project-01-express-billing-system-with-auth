@@ -1,14 +1,14 @@
-<nav id="page-nav" role="navigation">
+<nav id="page-nav" role="navigation" class="hide-for-print">
   <div id="nav-left">
     <a href="/"><img src="/images/iota-logo.svg" alt="Site Logo" id="site-logo"></a>
   </div>
   <div id="nav-center">
     <% if (authInfo.authenticated) { %>
-      <% if (authInfo.roles.includes("user")) { %>
+      <% if (authInfo.roles.includes("user")||authInfo.roles.includes("admin")||authInfo.roles.includes("manager")) { %>
         <a class="nav-link" href="/products">Products</a>
         <a class="nav-link" href="/invoices">Invoices</a>
       <% } %>
-      <% if (authInfo.roles.includes("manager")) { %>
+      <% if (authInfo.roles.includes("admin")||authInfo.roles.includes("manager")) { %>
         <a class="nav-link" href="/users">Users</a>
       <% } %>
     <% } else { %>
@@ -17,13 +17,21 @@
   </div>
   <div id="nav-right">
     <% if (authInfo.authenticated) { %>
-      <a class="nav-link" href="/auth/user" title="Dashboard">
-        <i class="bi bi-person-fill-gear fs-5" id="settings-btn"></i>
-      </a>      
-      <a class="nav-link" href="/auth/logout">Logout</a>
+      <div class="nav-dropdown">
+        <div class="dropdown">
+          <button class="dropdown-toggle" id="dropdownMenuButton">
+            Hello <%= authInfo.username %>!
+          </button>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <a class="dropdown-item" href="/auth/user">Settings</a>
+            <a class="dropdown-item" href="/auth/logout">Logout</a>
+          </div>
+        </div>
+      </div>           
     <% } else { %>
       <a class="nav-link" href="/auth/login">Login</a>
       <a class="nav-link" href="/auth/register">Register</a>
     <% } %>
   </div>
 </nav>
+<script src="/scripts/headerScript.js" defer></script>
