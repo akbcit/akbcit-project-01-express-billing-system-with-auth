@@ -19,6 +19,7 @@ exports.GetAllInvoices = async (req, res, next) => {
   const rolesPermitted = ["user", "admin", "manager"];
   // check auth status
   const authInfo = verifyAuth(req, rolesPermitted);
+  console.log(authInfo);
   // check if authenticated
   if (authInfo.authenticated) {
     // check if authorised

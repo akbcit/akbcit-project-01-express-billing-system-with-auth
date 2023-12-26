@@ -713,6 +713,10 @@ h7{
   font-size: 30px;
 }
 
+.bill-to{
+  margin-right: 5px;
+}
+
 /* overall styling for the summary, billable-details, and payment-details section */
 .summary,
 .billable-details,
