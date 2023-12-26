@@ -1,5 +1,5 @@
 const verifyAuth = (req, permittedRoles = []) => {
-  let isRolePermitted = false;
+  let isRolePermitted = permittedRoles.length>0?false:true;
   // check if any of user's roles match with permitted roles for this request
   if (req.session.roles) {
     let matchingRoles = req.session.roles?.filter((role) =>
