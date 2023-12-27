@@ -757,6 +757,34 @@ h5 {
   text-align: right;
 }
 
+#profile-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#self-edit-btn{
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  width: 8rem;
+  margin-bottom: 10px;
+}
+
+.self-edit-input{
+  height: 1.6rem;
+  width: 50%;
+}
+
+#self-edit-btn:hover{
+  background-color: #0056b3;
+}
+
 /* Hiding the navbar and return to invoices button when printing */
 @media print {
   .hide-for-print {

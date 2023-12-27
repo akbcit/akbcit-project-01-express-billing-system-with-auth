@@ -1,5 +1,5 @@
 const express = require("express");
-const {RegistrationForm,RegisterUser,LoginForm,LoginUser,UserProfile,LogoutUser,PasswordResetForm,PasswordReset} = require("../controllers/AuthController");
+const {RegistrationForm,RegisterUser,LoginForm,LoginUser,UserProfile,LogoutUser,PasswordResetForm,PasswordReset,SelfEdit} = require("../controllers/AuthController");
 const authRouter = express.Router();
 
 // route for rendering registration form
@@ -22,6 +22,9 @@ authRouter.post("/user/password-reset",PasswordReset);
 
 // route for user home
 authRouter.get("/user",UserProfile);
+
+// route for self edit profile
+authRouter.post("/user/edit",SelfEdit);
 
 // route for logging out
 authRouter.get("/logout",LogoutUser);

@@ -103,7 +103,9 @@ class UserRepo {
       // saving user doc
       console.log(`saving updated doc for ${username}`);
       await userDoc.save();
+      console.log(`newuser doc:${userDoc}`);
       // return success message
+      console.log(`${editedUser.username}'s records updated successfully`); 
       return `${editedUser.username}'s records updated successfully`;
     } catch (err) {
       console.log(`Error while updating: ${err.message}`);

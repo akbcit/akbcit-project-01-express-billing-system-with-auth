@@ -64,7 +64,8 @@ exports.RegisterUser = (req, res, next) => {
         errorMsg = "Error Registering : Email or username already exists!";
       } else {
         console.log(err.message);
-        errorMsg = "Error Registering : Please try again and ensure unique username and email!";
+        errorMsg =
+          "Error Registering : Please try again and ensure unique username and email!";
       }
       // render register page again
       res.render("register", {
@@ -201,6 +202,7 @@ exports.UserProfile = async (req, res, next) => {
       : successMessage
       ? { success: successMessage }
       : {},
+    editMode: false,
   });
   next();
 };
@@ -220,6 +222,56 @@ exports.PasswordResetForm = (req, res, next) => {
     res.redirect("/auth/login");
   }
   next();
+};
+
+exports.SelfEdit = async (req, res) => {
+  // check auth status
+  const authInfo = verifyAuth(req);
+  if (authInfo.authenticated) {
+    // get form data
+    const editedDetails = {
+      username: req.body.username,
+      email: req.body.email,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+    };
+    // send to repo for update
+    const username = authInfo.username;
+    const response = await _userRepo.editUser(username, editedDetails);
+    if (response.includes("Error")) {
+      return res.render("secure/users/dashboard", {
+        title: "Express Billing Project: User Info",
+        user: editedDetails,
+        authInfo: authInfo,
+        message: {
+          error:
+            "Error saving! Please ensure unique username and email and try again!",
+        },
+        editMode: true,
+      });
+    }
+    // if username changed login again automatically
+    if (username !== editedDetails.username) {
+      console.log(`new username: ${editedDetails.username}`);
+      req.user = await _userRepo.getUserByUsername(editedDetails.username);
+      req.login(req.user, async (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          // get user roles and attach those to session object
+          let sessionData = req.session;
+          sessionData.roles = req.user.roles;
+          req.flash("success", "Updated details saved successfully!");
+          return res.redirect("/auth/user");
+        }
+      });
+    } else {
+      req.flash("success", "Updated details saved successfully!");
+      return res.redirect("/auth/user");
+    }
+  } else {
+    return res.redirect("/auth/login");
+  }
 };
 
 // middleware for resetting password
@@ -293,6 +345,6 @@ exports.PasswordReset = async (req, res, next) => {
       });
     }
   } else {
-    res.redirect("/auth/login");
+    return res.redirect("/auth/login");
   }
 };
