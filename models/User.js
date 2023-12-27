@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 const Product = require("../models/Product");
+const Invoice = require("../models/Invoice");
 
 // validation and processing methods
 const toSentenceCase = (str) => {

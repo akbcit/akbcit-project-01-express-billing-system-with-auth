@@ -1,39 +1,100 @@
 <div id="user-profile" class="user-container">
   <div id="dashboard-prompt">
-    <%if(authInfo.roles.length===0){
-      %><p>You have no roles assigned right now, please contact admin for help! If you have not reset your admin-generated password yet, please do so on priority!</p><%
-    }%>
+    <% if (!editMode) { %>
+      <% if (authInfo.roles.length === 0) { %>
+        <p>You have no roles assigned right now, please contact admin for help! If you have not reset your admin-generated password yet, please do so on priority!</p>
+      <% } %>
+    <% } %>
   </div>
   <% if (message.error) { %>
-  <div class="error-container"><%= message.error %></div>
-  <% } %> <% if (message.success) { %>
-  <div class="success-container"><%= message.success %></div>
+    <div class="error-container"><%= message.error %></div>
+  <% } %> 
+  <% if (message.success) { %>
+    <div class="success-container"><%= message.success %></div>
   <% } %>
   <h2>Your Profile</h2>
-  <table>
-    <tr>
-      <td>Username:</td>
-      <td><%= user.username %></td>
-      <td><a href="/" id="">Edit</a></td>
-    </tr>
-    <tr>
-      <td>Email:</td>
-      <td><%= user.email %></td>
-      <td><a href="/">Edit</a></td>
-    </tr>
-    <tr>
-      <td>First Name:</td>
-      <td><%= user.firstName %></td>
-      <td><a href="/">Edit</a></td>
-    </tr>
-    <tr>
-      <td>Last Name:</td>
-      <td><%= user.lastName %></td>
-      <td><a href="/">Edit</a></td>
-    </tr>
-  </table>
-  <a href="/auth/user/password-reset" id="password-reset-link"
-    >Click to reset password!</a
-  >
+  <form id="profile-form" method="post" action="/auth/user/edit">
+    <table>
+      <tr>
+        <td>Username:</td>
+        <td>
+          <% if (editMode) { %>
+            <input type="text" id="username-edit" class="self-edit-input" name="username" value="<%= user.username %>" />
+          <% } else { %>
+            <span id="username-view"><%= user.username %></span>
+            <input type="text" id="username-edit" class="self-edit-input" name="username" style="display: none;" value="<%= user.username %>" />
+          <% } %>
+        </td>
+        <td>
+          <% if (editMode) { %>
+            <a href="#" id="self-edit-username" class="self-edit-link">Edit</a>
+          <% } else { %>
+            <a href="#" id="self-edit-username" class="self-edit-link">Edit</a>
+          <% } %>
+        </td>
+      </tr>
+      <tr>
+        <td>Email:</td>
+        <td>
+          <% if (editMode) { %>
+            <input type="email" id="email-edit" class="self-edit-input" name="email" value="<%= user.email %>" />
+          <% } else { %>
+            <span id="email-view"><%= user.email %></span>
+            <input type="email" id="email-edit" class="self-edit-input" name="email" style="display: none;" value="<%= user.email %>" />
+          <% } %>
+        </td>
+        <td>
+          <% if (editMode) { %>
+            <a href="#" id="self-edit-email" class="self-edit-link">Edit</a>
+          <% } else { %>
+            <a href="#" id="self-edit-email" class="self-edit-link">Edit</a>
+          <% } %>
+        </td>
+      </tr>
+      <tr>
+        <td>First Name:</td>
+        <td>
+          <% if (editMode) { %>
+            <input type="text" id="firstName-edit" class="self-edit-input" name="firstName" value="<%= user.firstName %>" />
+          <% } else { %>
+            <span id="firstName-view"><%= user.firstName %></span>
+            <input type="text" id="firstName-edit" class="self-edit-input" name="firstName" style="display: none;" value="<%= user.firstName %>" />
+          <% } %>
+        </td>
+        <td>
+          <% if (editMode) { %>
+            <a href="#" id="self-edit-firstName" class="self-edit-link">Edit</a>
+          <% } else { %>
+            <a href="#" id="self-edit-firstName" class="self-edit-link">Edit</a>
+          <% } %>
+        </td>
+      </tr>
+      <tr>
+        <td>Last Name:</td>
+        <td>
+          <% if (editMode) { %>
+            <input type="text" id="lastName-edit" class="self-edit-input" name="lastName" value="<%= user.lastName %>" />
+          <% } else { %>
+            <span id="lastName-view"><%= user.lastName %></span>
+            <input type="text" id="lastName-edit" class="self-edit-input" name="lastName" style="display: none;" value="<%= user.lastName %>" />
+          <% } %>
+        </td>
+        <td>
+          <% if (editMode) { %>
+            <a href="#" id="self-edit-lastName" class="self-edit-link">Edit</a>
+          <% } else { %>
+            <a href="#" id="self-edit-lastName" class="self-edit-link">Edit</a>
+          <% } %>
+        </td>
+      </tr>
+    </table>
+    <% if (editMode) { %>
+      <button type="submit" id="self-edit-btn">Save Changes</button>
+    <% } else { %>
+      <button type="submit" id="self-edit-btn" style="display: none;">Save Changes</button>
+    <% } %>
+  </form>
+  <a href="/auth/user/password-reset" id="password-reset-link">Click to reset password!</a>
 </div>
+
 <script src="/scripts/userEditScript.js" defer></script>
