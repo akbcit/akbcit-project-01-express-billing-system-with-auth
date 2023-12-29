@@ -10,7 +10,7 @@
         <%= message.success %>
     </div>
     <% } %>
-    <form action="/users/<%=user.username%>/edit" method="post" class="edit-user-form">
+    <form action="/users/<%=encodeURIComponent(user.username)%>/edit" method="post" class="edit-user-form">
         <table class="user-details-table">
             <tr>
                 <td><strong>Username:</strong></td>

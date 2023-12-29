@@ -15,10 +15,13 @@
     <% } %>
     <form id="search-form" action="/users" method="get">
         <div class="search-container">
-            <input type="text" id="search-input" name="query" placeholder="Search by Name, Role, or Company" />
+            <input type="text" id="search-input" name="query" placeholder="<%=authInfo.roles.includes("admin")?"Search by Name, Role or Company":"Search by Name, or Company"%>" />
             <button type="submit" id="search-button">Search</button>
         </div>
     </form>
+    <%if(isSearch){
+        %><a href="/users">Return to full list</a><%
+    }%>
     <table>
         <tr>
             <th>Username</th>

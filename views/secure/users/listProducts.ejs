@@ -19,6 +19,9 @@
             <button type="submit" id="search-button">Search</button>
         </div>
     </form>
+    <%if(isSearch){
+        %><a href="/products">Return to full list</a><%
+    }%>
     <% if (!products || products.length === 0) { %>
         <div>No Products found!</div>
     <% } else { %>
