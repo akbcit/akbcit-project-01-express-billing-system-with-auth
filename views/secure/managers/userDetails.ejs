@@ -10,6 +10,7 @@
         <%= message.success %>
     </div>
     <% } %>
+    <a href="/users">Return to Users</a>
     <table class="user-details-table">
         <tr>
             <td><strong>Username:</strong></td>
@@ -47,7 +48,7 @@
         <% } %>
     </table>
     <div class="user-actions">
-        <a href="/users/<%= user.username %>/edit" class="edit-link">Edit</a>
+        <a href=<%=authInfo.username===user.username?"/auth/user":`/users/${user.username}/edit`%> class="edit-link">Edit</a>
         <% if (authInfo.roles.includes("admin")) { %>
         <a href="/users/<%= user.username %>/delete" class="delete-link">Delete</a>
         <% } %>

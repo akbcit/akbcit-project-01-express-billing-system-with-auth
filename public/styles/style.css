@@ -13,6 +13,7 @@ body {
   background-attachment: fixed;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 #page-nav {
@@ -108,8 +109,8 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
   width: 100%;
+  flex:1;
 }
 
 #home-text {
@@ -447,6 +448,7 @@ tr.odd {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 .user-actions {
@@ -497,6 +499,7 @@ tr.odd {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 #invoicelist-container {
@@ -652,7 +655,6 @@ h2 {
 
 #invoice-details-page{
   height: 120%;
-  width: 42%;
   background-color: white;
   align-self: center;
   display: flex;
@@ -670,6 +672,8 @@ h2 {
   background-color: white;
   max-width: 600px;
   height: 800px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 #invoice-header{

@@ -92,6 +92,7 @@ exports.GetAllUsers = async (req, res, next) => {
           : successMessage
             ? { success: successMessage }
             : {},
+        isSearch:searchPhrase?true:false,
       });
     } else {
       return res.redirect("/auth/user");
