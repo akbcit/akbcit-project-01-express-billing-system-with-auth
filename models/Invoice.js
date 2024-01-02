@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 // Import the Products model
-const Product = require("./Product");
+const Product = require("../models/Product");
 
 // extract schema out of the imported model
 const productSchema = Product.schema;
@@ -41,10 +41,6 @@ const invoiceSchema = mongoose.Schema(
     client: {
       id: {
         type: mongoose.Schema.Types.ObjectId,
-      },
-      username: {
-        type: String,
-        required: true,
       },
       name: {
         type: String,

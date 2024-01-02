@@ -1,0 +1,41 @@
+<div class="client-container">
+  <h3>New Client</h3>
+  <p id="client-create-guidelines">If Client needs to be added as a user too, head over to <a href="/users/create">User Create</a> page</p>
+  <% if (message.error) { %>
+  <div class="error-container"><%= message.error %></div>
+  <% } %>
+  <% if (message.success) { %>
+  <div class="success-container"><%= message.success %></div>
+  <% } %>
+  <form id="client-create-form" action="/clients/create" method="post">
+    <table class="client-details-table">
+      <tr>
+        <td><strong>First Name:</strong></td>
+        <td><input type="text" name="firstName" value="<%= customer.firstName?customer.firstName:"" %>" <%= customer.username ? 'readonly' : '' %> required></td>
+      </tr>
+      <tr>
+        <td><strong>Last Name:</strong></td>
+        <td><input type="text" name="lastName" value="<%= customer.lastName?customer.lastName:"" %>" <%= customer.username ? 'readonly' : '' %> required></td>
+      </tr>
+      <tr>
+        <td><strong>Email:</strong></td>
+        <td><input type="email" name="email" value="<%= customer.email?customer.email:"" %>" <%= customer.username ? 'readonly' : '' %> required></td>
+      </tr>
+      <tr>
+        <td><strong>Code:</strong></td>
+        <td><input type="text" name="code" value="<%= customer.code?customer.code:"" %>" required></td>
+      </tr>
+      <tr>
+        <td><strong>Company:</strong></td>
+        <td><input type="text" name="company" value="<%= customer.company?customer.company:"" %>" required></td>
+      </tr>
+      <%if(customer.username){
+        %><input type="hidden" name="username" value="<%= customer.username%>"><%
+      }
+      %>
+    </table>
+    <div class="client-actions">
+      <button type="submit" class="add-button">Add Client</button>
+    </div>
+  </form>
+</div>

@@ -1,6 +1,5 @@
-const Invoice = require("../models/Invoice");
 const InvoiceRepo = require("../repos/invoiceRepo");
-const UserRepo = require("../repos/userRepo");
+const ClientRepo = require("../repos/clientRepo");
 const ProductRepo = require("../repos/productRepo");
 const verifyAuth = require("../services/verifyAuth");
 const formatClients = require("../services/formatClients");
@@ -9,7 +8,7 @@ const formatClients = require("../services/formatClients");
 const _invoiceRepo = new InvoiceRepo();
 
 // initialise an instance of the InvoiceRepo class
-const _userRepo = new UserRepo();
+const _clientRepo = new ClientRepo();
 
 // initialise an instance of the ProductRepo class
 const _productRepo = new ProductRepo();
@@ -115,10 +114,10 @@ exports.CreateInvoiceForm = async (req, res, next) => {
       const successMessage = req.flash("success")[0];
       // get products and clients
       const products = await _productRepo.getAllProducts();
-      const clients = formatClients(await _userRepo.getAllClients());
+      const clients = formatClients(await _clientRepo.getAllClients());
       // render the form
       return res.render("secure/managers/invoiceCreate", {
-        title: "",
+        title: "Express Billing Project: Create Invoice",
         authInfo: authInfo,
         products: products,
         clients: clients,
@@ -150,7 +149,7 @@ exports.CreateInvoice = async (req, res, next) => {
       const errorMessage = req.flash("error")[0];
       const successMessage = req.flash("success")[0];
       // get all the data from req.body and create a new invoice object
-      const clientDoc = await _userRepo.getUserById(req.body.invoiceClient);
+      const clientDoc = await _clientRepo.getClientById(req.body.invoiceClient);
       // create client object for invoice
       const invoiceClient = {
         id: clientDoc.id,
@@ -158,8 +157,8 @@ exports.CreateInvoice = async (req, res, next) => {
         name: `${clientDoc.firstName}${
           clientDoc.lastName ? ` ${clientDoc.lastName}` : ""
         }`,
-        code: clientDoc.clientDetails.code,
-        company: clientDoc.clientDetails.company,
+        code: clientDoc.code,
+        company: clientDoc.company,
         email: clientDoc.email,
       };
       // create lineitems array for invoice
@@ -195,7 +194,7 @@ exports.CreateInvoice = async (req, res, next) => {
       if (response.includes("Error")) {
         // get products and clients
         const products = await _productRepo.getAllProducts();
-        const clients = formatClients(await _userRepo.getAllClients());
+        const clients = formatClients(await _clientRepo.getAllClients());
         // render the form
         return res.render("secure/managers/invoiceCreate", {
           title: "",

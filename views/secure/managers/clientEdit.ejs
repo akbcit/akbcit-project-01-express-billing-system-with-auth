@@ -1,0 +1,37 @@
+<div id="client-edit-container" class="client-container">
+  <form id="client-edit-form" action="/clients/<%=customer.id%>/edit" method="post">
+    <h3>Edit <%=customer.firstName%>'s Details</h3>
+    <% if (message.error) { %>
+    <div class="error-container">
+      <%= message.error %>
+    </div>
+    <% } %>
+    <% if (message.success) { %>
+    <div class="success-container">
+      <%= message.success %>
+    </div>
+    <% } %>
+    <div class="form-group">
+      <input type="hidden" name="clientId" value="<%= customer.id %>" />
+      <label for="client-email">Email:</label>
+      <input class="form-control" type="email" id="client-email" name="email" required value="<%= customer.email %>" />
+    </div>
+    <div class="form-group">
+      <label for="client-name">First Name:</label>
+      <input class="form-control" type="text" id="client-name" name="firstName" required value="<%= customer.firstName %>" />
+    </div>
+    <div class="form-group">
+      <label for="client-name">Name:</label>
+      <input class="form-control" type="text" id="client-name" name="lastName" required value="<%= customer.lastName %>" />
+    </div>
+    <div class="form-group">
+      <label for="client-code">Short Code:</label>
+      <input class="form-control" type="text" id="client-code" name="code" required value="<%= customer.code %>" />
+    </div>
+    <div class="form-group">
+      <label for="client-company">Company:</label>
+      <input class="form-control" type="text" id="client-company" name="company" required value="<%= customer.company %>" />
+    </div>
+    <button class="btn btn-primary" type="submit" value="Submit">Save Changes</button>
+  </form>
+</div>

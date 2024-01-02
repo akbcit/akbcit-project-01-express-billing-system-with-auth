@@ -15,17 +15,19 @@
     <% } %>
     <form id="search-form" action="/invoices" method="get">
         <div class="search-container">
-            <input type="text" id="search-input" name="query" placeholder=<%=authInfo.roles.includes("admin")||authInfo.roles.includes("manager")?"Search by client or product":"Search by product"%> />
-            <button type="submit" id="search-button">Search</button>
+            <input type="text" class="search-input" name="query" placeholder=<%=authInfo.roles.includes("admin")||authInfo.roles.includes("manager")?"Search by client or product":"Search by product"%> />
+            <button type="submit" class="search-button">Search</button>
         </div>
     </form>
     <% if (!invoices || invoices.length === 0) { %>
         <div>No Invoices found!</div>
     <% } else { %>
-        <table>
+        <table class="table">
             <tr>
                 <td>Invoice</td>
                 <td>Status</td>
+                <td></td>
+                <td></td>
             </tr>
             <% invoices.forEach((invoice) => { %>
             <tr>

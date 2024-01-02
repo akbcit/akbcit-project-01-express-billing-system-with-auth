@@ -10,11 +10,13 @@ const session = require("express-session");
 const flash = require("express-flash");
 const path = require("path");
 const indexRouter = require("./routers/indexRouter");
+const clientsRouter = require("./routers/clientsRouter");
 const usersRouter = require("./routers/usersRouter");
 const productsRouter = require("./routers/productsRouter");
 const invoicesRouter = require("./routers/invoicesRouter");
 const authRouter = require("./routers/authRouter");
 const User = require("./models/User");
+const verifyAuth = require("./services/verifyAuth");
 
 // use dotenv
 require("dotenv").config();
@@ -77,10 +79,18 @@ app.use((err, req, res, next) => {
 
 // use routers
 app.use("/",indexRouter);
+app.use("/clients",clientsRouter);
 app.use("/users",usersRouter);
 app.use("/products",productsRouter);
 app.use("/invoices",invoicesRouter);
 app.use("/auth",authRouter);
+
+// for any other pages get 404
+app.get("/*",(req,res)=>{
+  const authInfo = verifyAuth(req);
+    // Respond with a 404 error status and render the 404.ejs page
+  res.status(404).render("404",{title:"Express Billing Project: Page Not Found",authInfo:authInfo});
+});
 
 // start listening
 const PORT = process.env.PORT || 3003;

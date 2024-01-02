@@ -1,4 +1,3 @@
-const Product = require("../models/Product");
 const ProducRepo = require("../repos/productRepo");
 const verifyAuth = require("../services/verifyAuth");
 

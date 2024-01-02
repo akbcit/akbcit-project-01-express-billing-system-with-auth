@@ -2,10 +2,12 @@ const User = require("../models/User");
 const passport = require("passport");
 const verifyAuth = require("../services/verifyAuth");
 const UserRepo = require("../repos/userRepo");
+const ClientRepo = require("../repos/clientRepo");
 const isPasswordSecure = require("../services/isPasswordSecure");
 
-// instantiate UserRepo
+// instantiate UserRepo and ClientRepo
 const _userRepo = new UserRepo();
+const _clientRepo = new ClientRepo();
 
 // middleware to render registration form
 exports.RegistrationForm = (req, res, next) => {
@@ -57,7 +59,7 @@ exports.RegisterUser = (req, res, next) => {
     });
   }
   // else register user
-  User.register(new User(newUser), password, (err, user) => {
+  User.register(new User(newUser), password, async (err, user) => {
     if (err) {
       let errorMsg = "";
       if (err.code === 11000) {
@@ -75,6 +77,16 @@ exports.RegisterUser = (req, res, next) => {
         authInfo: verifyAuth(req),
       });
     } else {
+      // check if a client exists with this email
+      const clientDoc = await _clientRepo.getClientByEmail(newUser.email);
+      // if yes update the client's username, name and add clientID to user
+      clientDoc.username = newUser.username;
+      clientDoc.firstName = newUser.firstName;
+      clientDoc.lastName = newUser.lastName;
+      await clientDoc.save();
+      const userDoc = await _userRepo.getUserByEmail(newUser.email);
+      userDoc.clientId = clientDoc._id;
+      await userDoc.save();
       // login user
       passport.authenticate("local", (err, user) => {
         if (err) {
@@ -235,10 +247,12 @@ exports.SelfEdit = async (req, res) => {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
     };
+    // get user's current details to be used for cascading later
+    const currUserDoc = await _userRepo.getUserByUsername(authInfo.username);
     // send to repo for update
     const username = authInfo.username;
     const response = await _userRepo.editUser(username, editedDetails);
-    if (response.includes("Error")) {
+    if (!response) {
       return res.render("secure/users/dashboard", {
         title: "Express Billing Project: User Info",
         user: editedDetails,
@@ -250,6 +264,12 @@ exports.SelfEdit = async (req, res) => {
         editMode: true,
       });
     }
+    // invoke inUpdate cascade to update client details if user is a client too
+    const newUserDoc = response;
+    await _userRepo.onUpdateCascadeClient(
+      currUserDoc,
+      newUserDoc
+    );
     // if username changed login again automatically
     if (username !== editedDetails.username) {
       console.log(`new username: ${editedDetails.username}`);
