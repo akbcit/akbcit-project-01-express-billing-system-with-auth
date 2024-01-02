@@ -1,96 +1,95 @@
 <div class="invoice-container">
-    <h2>Create New Invoice</h2>
-    <% if (message.error) { %>
-        <div class="error-container">
-            <%= message.error %>
+  <h2>Create New Invoice</h2>
+  <% if (message.error) { %>
+  <div class="error-container">
+    <%= message.error %>
+  </div>
+  <% } %>
+  <% if (message.success) { %>
+  <div class="success-container">
+    <%= message.success %>
+  </div>
+  <% } %>
+  <div id="invoice-create-div">
+    <% if (clients.length > 0 && products.length>0) { %>
+    <form id="invoice-create-form" action="/invoices/create" method="post">
+      <div id="invoice-details-form">
+        <div class="form-group">
+          <label for="invoice-num">Number:</label>
+          <input class="form-control" type="number" id="invoice-num" min="1" name="invoiceNum" value="<%= invoice.invoiceNum ? invoice.invoiceNum : '' %>" required />
         </div>
-    <% } %>
-    <% if (message.success) { %>
-        <div class="success-container">
-            <%= message.success %>
+        <div class="form-group">
+          <label for="invoice-client">Client:</label>
+          <select class="form-control" id="invoice-client" name="invoiceClient">
+            <% clients.forEach((client) => { %>
+            <option value="<%= client.id %>" <%= invoice.client && client.id === invoice.client.id ? 'selected' : ''%>>
+              <%= client.name + (client.username ? ` (${client.username})` : '') %> </option>
+            <% }) %>
+          </select>
         </div>
-    <% } %>
-    <div id="invoice-create-div">
-        <% if (clients.length > 0 && products.length>0) { %>
-            <form id="invoice-create-form" action="/invoices/create" method="post">
-                <div id="invoice-details-form">
-                    <div class="form-group">
-                        <label for="invoice-num">Number:</label>
-                        <input class="form-control" type="number" id="invoice-num" min="1" name="invoiceNum" value="<%= invoice.invoiceNum ? invoice.invoiceNum : '' %>" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="invoice-client">Client:</label>
-                        <select class="form-control" id="invoice-client" name="invoiceClient">
-                            <% clients.forEach((client) => { %>
-                                <option value="<%= client.id %>" <%= invoice.client && client.id === invoice.client.id ? 'selected' : ''%>>
-                                    <%= client.name %>
-                                </option>
-                            <% }) %>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="invoice-issueDate">Issue Date:</label>
-                        <input class="form-control" type="date" id="invoice-issueDate" name="invoiceIssueDate" value="<%= invoice.issueDate ? (new Date(invoice.issueDate).toISOString().split('T')[0]) : (new Date().toISOString().split('T')[0]) %>" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="invoice-dueDate">Due Date:</label>
-                        <input class="form-control" type="date" id="invoice-dueDate" name="invoiceDueDate" value="<%= invoice.issueDate ? (new Date(invoice.dueDate).toISOString().split('T')[0]) : (new Date().toISOString().split('T')[0]) %>" required />
-                    </div>
-                </div>
-                <h5 id="line-items-heading">Line Items</h5>
-                <div id="add-lineItems">
-                    <div class="form-group">
-                        <label for="product-name">Product:</label>
-                        <select class="form-control" id="product-name">
-                            <% products.forEach((product) => { %>
-                                <option value="<%= product.id %>">
-                                    <%= product.name %>
-                                </option>
-                            <% }) %>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <p id="cost-label">Unit Cost:</p>
-                        <span id="product-cost"></span>
-                        <script>
-                            // script to get cost
-                            let products = <%- JSON.stringify(products) %>;
-                            // function to set product cost
-                            const setProductCost = ()=>{
-                              let productId = document.getElementById("product-name").value;
-                              console.log(productId);
-                              let cost = null;
-                              for (let i = 0; i < products.length; i++) {
-                                  if (products[i]._id === productId) {
-                                      cost = products[i].unitCost.$numberDecimal;
-                                      // exit the loop when a match is found
-                                      break; 
-                                   }
-                              }
-                            // set value of cost element
-                            document.getElementById("product-cost").innerText=`$${cost}`;
-                            }
-                             // call function to set initial cost
-                             setProductCost();
-                            // add event listener so that when option changes, cost updates
-                            document.getElementById("product-name").addEventListener("change",setProductCost);
-                        </script>
-                    </div>
-                    <div class="form-group">
-                        <label for="product-qty">Quantity:</label>
-                        <input class="form-control" type="number" id="product-qty" min="1" value="1" />
-                    </div>
-                    <div id="add-new-item">&#xFF0B;</div>
-                </div>
-                <ol id="line-items-list"></ol>
-                <input type = "hidden" id="lineItems-input" name="lineItems" value="<%=invoice.lineItems ? JSON.stringify(invoice.lineItems) : ''%>"/>
-                <button class="btn btn-primary" type="submit" value="Submit" id="invoice-submit">
-                    Create
-                </button>
-            </form>
-        <% } else { %>
-            <p>No clients / products found; Can't create invoice</p>
-        <% } %>
+        <div class="form-group">
+          <label for="invoice-issueDate">Issue Date:</label>
+          <input class="form-control" type="date" id="invoice-issueDate" name="invoiceIssueDate" value="<%= invoice.issueDate ? (new Date(invoice.issueDate).toISOString().split('T')[0]) : (new Date().toISOString().split('T')[0]) %>" required />
+        </div>
+        <div class="form-group">
+          <label for="invoice-dueDate">Due Date:</label>
+          <input class="form-control" type="date" id="invoice-dueDate" name="invoiceDueDate" value="<%= invoice.issueDate ? (new Date(invoice.dueDate).toISOString().split('T')[0]) : (new Date().toISOString().split('T')[0]) %>" required />
+        </div>
       </div>
+      <h5 id="line-items-heading">Line Items</h5>
+      <div id="add-lineItems">
+        <div class="form-group">
+          <label for="product-name">Product:</label>
+          <select class="form-control" id="product-name">
+            <% products.forEach((product) => { %>
+            <option value="<%= product.id %>">
+              <%= product.name %>
+            </option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-group">
+          <p id="cost-label">Unit Cost:</p>
+          <span id="product-cost"></span>
+          <script>
+            // script to get cost
+            let products = <%- JSON.stringify(products) %>;
+            // function to set product cost
+            const setProductCost = () => {
+              let productId = document.getElementById("product-name").value;
+              console.log(productId);
+              let cost = null;
+              for (let i = 0; i < products.length; i++) {
+                if (products[i]._id === productId) {
+                  cost = products[i].unitCost.$numberDecimal;
+                  // exit the loop when a match is found
+                  break;
+                }
+              }
+              // set value of cost element
+              document.getElementById("product-cost").innerText = `$${cost}`;
+            }
+            // call function to set initial cost
+            setProductCost();
+            // add event listener so that when option changes, cost updates
+            document.getElementById("product-name").addEventListener("change", setProductCost);
+          </script>
+        </div>
+        <div class="form-group">
+          <label for="product-qty">Quantity:</label>
+          <input class="form-control" type="number" id="product-qty" min="1" value="1" />
+        </div>
+        <div id="add-new-item">&#xFF0B;</div>
+      </div>
+      <ol id="line-items-list"></ol>
+      <input type="hidden" id="lineItems-input" name="lineItems" value="<%=invoice.lineItems ? JSON.stringify(invoice.lineItems) : ''%>" />
+      <button class="btn btn-primary" type="submit" value="Submit" id="invoice-submit">
+        Create
+      </button>
+    </form>
+    <% } else { %>
+    <p>No clients / products found; Can't create invoice</p>
+    <% } %>
+  </div>
 </div>
 <script src="/scripts/lineItemScript.js" defer></script>

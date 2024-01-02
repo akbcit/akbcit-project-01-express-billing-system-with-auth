@@ -10,7 +10,7 @@
     <%= message.success %>
   </div>
   <% } %>
-  <% if (authInfo.roles.includes("admin")) { %>
+  <% if (authInfo.roles.includes("admin")||authInfo.roles.includes("manager")) { %>
   <a href="/clients/create" class="add-link">Add a new Client</a>
   <% } %>
   <div id="search-bar">
@@ -33,18 +33,24 @@
         </td>
         <td>
         </td>
+        <td></td>
       </tr>
-        <% clients.forEach((client) => { %>
-        <tr>
-          <td><a href="/clients/<%= client.id %>" class="text-decoration-none"><%= client.firstName + " " + client.lastName %></a></td>
-          <td><%=client.username?"Yes":"No"%></td>
-          <% if (authInfo.roles.includes("admin")) { %>
-            <td class="text-end">
-                <a href="/clients/<%= client.id %>/delete" class="delete-link">Delete</a>
-              </td>
-            <% } %>
-        </tr>
-        <% }); %>
+      <% clients.forEach((client) => { %>
+      <tr>
+        <td><a href="/clients/<%= client.id %>" class="text-decoration-none"><%= client.firstName + " " + client.lastName %></a></td>
+        <td><%=client.username?"Yes":"No"%></td>
+        <% if (authInfo.roles.includes("admin")) { %>
+        <td class="text-end">
+          <a href="/clients/<%= client.id %>/delete" class="delete-link">Delete</a>
+        </td>
+        <% } %>
+        <% if (authInfo.roles.includes("manager")) { %>
+        <td class="text-end">
+          <a href="/clients/<%= client.id %>/edit" class="edit-link">Update</a>
+        </td>
+        <% } %>
+      </tr>
+      <% }); %>
     </table>
   </div>
 </div>

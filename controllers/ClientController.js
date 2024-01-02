@@ -83,7 +83,7 @@ exports.ClientDetails = async (req, res) => {
 
 // method to render client create form
 exports.CreateClientForm = async (req, res) => {
-  const rolesPermitted = ["admin"];
+  const rolesPermitted = ["admin","manager"];
   // check auth status
   const authInfo = verifyAuth(req, rolesPermitted);
   // check if authenticated
@@ -126,7 +126,7 @@ exports.CreateClientForm = async (req, res) => {
 
 // method to create client
 exports.CreateClient = async (req, res) => {
-  const rolesPermitted = ["admin"];
+  const rolesPermitted = ["admin","manager"];
   // check auth status
   const authInfo = verifyAuth(req, rolesPermitted);
   // check if authenticated
@@ -335,7 +335,7 @@ exports.DeleteClient = async (req, res) => {
         } else {
           req.flash(
             "error",
-            "Deleted client but could not update user records!"
+            "Deleted client but could not update user records because of absence of user account or soem internal error. Please verify manually!"
           );
           return res.redirect("/clients");
         }

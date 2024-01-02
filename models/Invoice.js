@@ -41,6 +41,10 @@ const invoiceSchema = mongoose.Schema(
     client: {
       id: {
         type: mongoose.Schema.Types.ObjectId,
+        required:true,
+      },
+      username:{
+        type: String,
       },
       name: {
         type: String,
