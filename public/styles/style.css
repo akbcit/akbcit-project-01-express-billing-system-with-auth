@@ -110,7 +110,7 @@ main {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  flex:1;
+  flex: 1;
 }
 
 #home-text {
@@ -127,9 +127,11 @@ main {
   0% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
+
   100% {
     transform: translateY(0);
   }
@@ -280,9 +282,29 @@ input[type="submit"]:hover {
   align-items: center;
   color: red;
 }
+
+.client-details {
+  display: flex;
+  flex-direction: row;
+}
+
 .user-details {
   display: flex;
   flex-direction: row;
+}
+
+#client-edit-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#user-edit-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 #password-reset-link {
@@ -323,6 +345,19 @@ input[type="submit"]:hover {
   color: red;
 }
 
+#clientlist-container {
+  width: 1200px;
+  font-family: "Viga", sans-serif;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 #userlist-container {
   width: 1200px;
   font-family: "Viga", sans-serif;
@@ -350,6 +385,12 @@ h2 {
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
+  margin-bottom: 10px;
+  height: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: ce;
 }
 
 .add-link:hover {
@@ -363,7 +404,7 @@ h2 {
   width: 400px;
 }
 
-#search-input {
+.search-input {
   flex: 1;
   padding: 10px;
   margin-right: 10px;
@@ -372,7 +413,7 @@ h2 {
   font-size: 16px;
 }
 
-#search-button {
+.search-button {
   padding: 10px 20px;
   background-color: #007bff;
   color: #fff;
@@ -381,7 +422,7 @@ h2 {
   cursor: pointer;
 }
 
-#search-button:hover {
+.search-button:hover {
   background-color: #0056b3;
 }
 
@@ -436,6 +477,21 @@ tr.odd {
   background-color: #c82333;
 }
 
+.client-container {
+  width: 700px;
+  font-family: "Viga", sans-serif;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .user-container {
   width: 700px;
   font-family: "Viga", sans-serif;
@@ -449,6 +505,12 @@ tr.odd {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.client-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .user-actions {
@@ -653,7 +715,7 @@ h2 {
 /* styling for viewing individual invoice details */
 /* styling for the header section */
 
-#invoice-details-page{
+#invoice-details-page {
   height: 120%;
   background-color: white;
   align-self: center;
@@ -665,7 +727,7 @@ h2 {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-#invoice-details-container{
+#invoice-details-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -676,7 +738,7 @@ h2 {
   margin-right: 5px;
 }
 
-#invoice-header{
+#invoice-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -684,7 +746,7 @@ h2 {
   white-space: nowrap;
 }
 
-#invoice-logo{
+#invoice-logo {
   height: 2.5rem;
 }
 
@@ -694,6 +756,7 @@ h2 {
   line-height: 0.5rem;
   margin-left: 0.5rem;
 }
+
 .logo-and-info {
   margin-top: 20px;
   display: flex;
@@ -707,7 +770,7 @@ h2 {
   align-self: flex-start;
 }
 
-h7{
+h7 {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -717,7 +780,7 @@ h7{
   font-size: 30px;
 }
 
-.bill-to{
+.bill-to {
   margin-right: 5px;
 }
 
@@ -761,14 +824,14 @@ h5 {
   text-align: right;
 }
 
-#profile-form{
+#profile-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-#self-edit-btn{
+#self-edit-btn {
   background-color: #007bff;
   color: white;
   padding: 5px 10px;
@@ -780,13 +843,29 @@ h5 {
   margin-bottom: 10px;
 }
 
-.self-edit-input{
+.self-edit-input {
   height: 1.6rem;
   width: 50%;
 }
 
-#self-edit-btn:hover{
+#self-edit-btn:hover {
   background-color: #0056b3;
+}
+
+#not-found-section {
+  margin-top: 7rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#not-found-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 /* Hiding the navbar and return to invoices button when printing */
@@ -794,7 +873,8 @@ h5 {
   .hide-for-print {
     display: none;
   }
-  #invoice-details-page{
+
+  #invoice-details-page {
     box-shadow: none;
   }
 }

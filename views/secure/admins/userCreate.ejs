@@ -1,70 +1,76 @@
 <div class="user-container">
-    <h2>Add New User</h2>
-    <p class = "password-guidelines">Make sure the password includes at least 8 characters, a mix of uppercase and lowercase letters, and at least one number or special character for added security.</p>
-    <% if (message.error) { %>
-    <div class="error-container">
-        <%= message.error %>
+  <h2>Add New User</h2>
+  <p class="password-guidelines">Make sure the password includes at least 8 characters, a mix of uppercase and lowercase letters, and at least one number or special character for added security.</p>
+  <% if (message.error) { %>
+  <div class="error-container">
+    <%= message.error %>
+  </div>
+  <% } %>
+  <% if (message.success) { %>
+  <div class="success-container">
+    <%= message.success %>
+  </div>
+  <% } %>
+  <form action="/users/create" method="post">
+    <table class="user-details-table">
+      <tr>
+        <td><strong>Username:</strong></td>
+        <td><input type="text" name="username" value="<%= user.username ? user.username : "" %>" required></td>
+      </tr>
+      <tr>
+        <td><strong>Email:</strong></td>
+        <td><input type="email" name="email" value="<%= user.email ? user.email : "" %>" <%= user.clientId ? 'readonly' : '' %> required></td>
+      </tr>
+      <tr>
+        <td><strong>Password:</strong></td>
+        <td><input type="password" name="password" required></td>
+      </tr>
+      <tr>
+        <td><strong>Confirm Password:</strong></td>
+        <td><input type="password" name="confirmPassword" required></td>
+      </tr>
+      <tr>
+        <td><strong>First Name:</strong></td>
+        <td><input type="text" name="firstName" value="<%= user.firstName ? user.firstName : "" %>" <%= user.clientId ? 'readonly' : '' %> required></td>
+      </tr>
+      <tr>
+        <td><strong>Last Name:</strong></td>
+        <td><input type="text" name="lastName" value="<%= user.lastName ? user.lastName : "" %>" <%= user.clientId ? 'readonly' : '' %> required></td>
+      </tr>
+      <% if (!user.clientId) { %>
+      <tr>
+        <td><strong>Roles:</strong></td>
+        <td>
+          <select name="roles">
+            <option value="" <%= !user.roles || user.roles.length === 0 ? 'selected' : '' %>>None</option>
+            <option value="user" <%= user.roles && user.roles.includes("user") ? 'selected' : '' %>>User</option>
+            <option value="user,manager" <%= user.roles && user.roles.includes("manager") ? 'selected' : '' %>>Manager</option>
+            <option value="user,manager,admin" <%= user.roles && user.roles.includes("admin") ? 'selected' : '' %>>Admin</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Is Client:</strong></td>
+        <td>
+          <input type="checkbox" name="isClient" <%= user.isClient ? 'checked' : '' %>>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Client Code:</strong></td>
+        <td><input type="text" name="clientCode" value="<%= user.clientCode ? user.clientCode || '' : '' %>"></td>
+      </tr>
+      <tr>
+        <td><strong>Client Company:</strong></td>
+        <td><input type="text" name="company" value="<%= user.clientCompany ? user.clientCompany || '' : '' %>"></td>
+      </tr>
+      <% } else { %>
+      <input type="hidden" name="roles" value="user">
+      <input type="hidden" name="clientId" value="<%= user.clientId%>">
+      <input type="hidden" name="isClient" value="true">
+      <% } %>
+    </table>
+    <div class="user-actions">
+      <button type="submit" class="add-button">Add User</button>
     </div>
-    <% } %>
-    <% if (message.success) { %>
-    <div class="success-container">
-        <%= message.success %>
-    </div>
-    <% } %>
-    <form action="/users/create" method="post">
-        <table class="user-details-table">
-            <tr>
-                <td><strong>Username:</strong></td>
-                <td><input type="text" name="username" value="<%= user.username?user.username:"" %>" required></td>
-            </tr>
-            <tr>
-                <td><strong>Email:</strong></td>
-                <td><input type="email" name="email" value="<%= user.email?user.email:"" %>" required></td>
-            </tr>
-            <tr>
-                <td><strong>Password:</strong></td>
-                <td><input type="password" name="password" required></td>
-            </tr>
-            <tr>
-                <td><strong>Confirm Password:</strong></td>
-                <td><input type="password" name="confirmPassword" required></td>
-            </tr>
-            <tr>
-                <td><strong>First Name:</strong></td>
-                <td><input type="text" name="firstName" value="<%= user.firstName?user.firstName:"" %>" required></td>
-            </tr>
-            <tr>
-                <td><strong>Last Name:</strong></td>
-                <td><input type="text" name="lastName" value="<%= user.lastName?user.lastName:"" %>" required></td>
-            </tr>
-                <tr>
-                    <td><strong>Roles:</strong></td>
-                    <td>
-                        <select name="roles">
-                            <option value="" <%= !user.roles || user.roles.length === 0 ? 'selected' : '' %>>None</option>
-                            <option value="user" <%= user.roles && user.roles.includes("user") &&!user.roles.includes("manager")&&!user.roles.includes("admin")? 'selected' : '' %>>User</option>
-                            <option value="user,manager" <%= user.roles && user.roles.includes("manager") &&!user.roles.includes("admin")? 'selected' : '' %>>Manager</option>
-                            <option value="user,manager,admin" <%= user.roles && user.roles.includes("admin") ? 'selected' : '' %>>Admin</option>
-                        </select>
-                    </td>
-                </tr>
-            <tr>
-                <td><strong>Is Client:</strong></td>
-                <td>
-                    <input type="checkbox" name="isClient" <%= user.clientDetails && user.clientDetails.isClient ? 'checked' : '' %>>
-                </td>
-            </tr>
-            <tr>
-                <td><strong>Client Code:</strong></td>
-                <td><input type="text" name="clientCode" value="<%= user.clientDetails && user.clientDetails.isClient ? user.clientDetails.code || '' : '' %>"></td>
-            </tr>
-            <tr>
-                <td><strong>Client Company:</strong></td>
-                <td><input type="text" name="company" value="<%= user.clientDetails && user.clientDetails.isClient ? user.clientDetails.company || '' : '' %>"></td>
-            </tr>            
-        </table>
-        <div class="user-actions">
-            <button type="submit" class="add-button">Add User</button>
-        </div>
-    </form>
+  </form>
 </div>

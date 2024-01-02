@@ -9,6 +9,7 @@
         <a class="nav-link" href="/invoices">Invoices</a>
       <% } %>
       <% if (authInfo.roles.includes("admin")||authInfo.roles.includes("manager")) { %>
+        <a class="nav-link" href="/clients">Clients</a>
         <a class="nav-link" href="/users">Users</a>
       <% } %>
     <% } else { %>

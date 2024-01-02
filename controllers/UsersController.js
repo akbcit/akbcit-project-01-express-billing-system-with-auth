@@ -1,9 +1,10 @@
-const User = require("../models/User");
 const verifyAuth = require("../services/verifyAuth");
+const ClientRepo = require("../repos/clientRepo");
 const UserRepo = require("../repos/userRepo");
 const isPasswordSecure = require("../services/isPasswordSecure");
 
-// instantiate UserRepo
+// initialise instances of the repos
+const _clientRepo = new ClientRepo();
 const _userRepo = new UserRepo();
 
 // middleware to get all users based on access level
@@ -47,37 +48,37 @@ exports.GetAllUsers = async (req, res, next) => {
         // exlude admin and manager roles and include search filter if any
         filterObj = searchPhrase
           ? {
-            $and: [
-              {
-                $or: [
-                  { username: { $regex: searchPhrase, $options: "i" } },
-                  { lastName: { $regex: searchPhrase, $options: "i" } },
-                  { firstName: { $regex: searchPhrase, $options: "i" } },
-                  { roles: { $regex: searchPhrase, $options: "i" } },
-                  {
-                    "clientDetails.company": {
-                      $regex: searchPhrase,
-                      $options: "i",
+              $and: [
+                {
+                  $or: [
+                    { username: { $regex: searchPhrase, $options: "i" } },
+                    { lastName: { $regex: searchPhrase, $options: "i" } },
+                    { firstName: { $regex: searchPhrase, $options: "i" } },
+                    { roles: { $regex: searchPhrase, $options: "i" } },
+                    {
+                      "clientDetails.company": {
+                        $regex: searchPhrase,
+                        $options: "i",
+                      },
                     },
-                  },
-                ],
-              },
-              {
-                $or: [
-                  { roles: { $size: 0 } },
-                  { roles: { $exists: false } },
-                  { roles: { $nin: excludedRoles } },
-                ],
-              },
-            ],
-          }
+                  ],
+                },
+                {
+                  $or: [
+                    { roles: { $size: 0 } },
+                    { roles: { $exists: false } },
+                    { roles: { $nin: excludedRoles } },
+                  ],
+                },
+              ],
+            }
           : {
-            $or: [
-              { roles: { $size: 0 } },
-              { roles: { $exists: false } },
-              { roles: { $nin: excludedRoles } },
-            ],
-          };
+              $or: [
+                { roles: { $size: 0 } },
+                { roles: { $exists: false } },
+                { roles: { $nin: excludedRoles } },
+              ],
+            };
         query = await _userRepo.getAllUsers(filterObj);
       }
       // assign query results to users array
@@ -90,9 +91,9 @@ exports.GetAllUsers = async (req, res, next) => {
         message: errorMessage
           ? { error: errorMessage }
           : successMessage
-            ? { success: successMessage }
-            : {},
-        isSearch:searchPhrase?true:false,
+          ? { success: successMessage }
+          : {},
+        isSearch: searchPhrase ? true : false,
       });
     } else {
       return res.redirect("/auth/user");
@@ -126,8 +127,8 @@ exports.UserDetails = async (req, res, next) => {
           message: errorMessage
             ? { error: errorMessage }
             : successMessage
-              ? { success: successMessage }
-              : {},
+            ? { success: successMessage }
+            : {},
         });
       } else {
         req.flash("error", `Could not find/load ${username}`);
@@ -140,7 +141,7 @@ exports.UserDetails = async (req, res, next) => {
 };
 
 // middleware to display Add user form
-exports.CreateUserForm = (req, res, next) => {
+exports.CreateUserForm = async (req, res, next) => {
   const rolesPermitted = ["admin"];
   // get authInfo
   const authInfo = verifyAuth(req, rolesPermitted);
@@ -151,16 +152,33 @@ exports.CreateUserForm = (req, res, next) => {
       // retreive message, if any from req.flash
       const errorMessage = req.flash("error")[0];
       const successMessage = req.flash("success")[0];
+      // check if there is a client id in query params
+      const clientId = req.query.clientId;
+      // if yes, retrieve this client
+      let user = {};
+
+      if (clientId) {
+        // Retrieve client details from the repository
+        const client = await _clientRepo.getClientById(clientId);
+
+        // Populate the user object with client details
+        user = {
+          firstName: client.firstName,
+          lastName: client.lastName,
+          email: client.email,
+          clientId: clientId,
+        };
+      }
       // render form
       return res.render("secure/admins/userCreate", {
         title: "Express Billing Project: Create User",
         authInfo: authInfo,
-        user: {},
+        user: user,
         message: errorMessage
           ? { error: errorMessage }
           : successMessage
-            ? { success: successMessage }
-            : {},
+          ? { success: successMessage }
+          : {},
       });
     } else {
       return res.redirect("/auth/user");
@@ -186,12 +204,35 @@ exports.CreateUser = async (req, res, next) => {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         roles: req.body.roles ? req.body.roles.split(",") : [],
-        clientDetails: {
-          isClient: req.body.isClient === "on" ? true : false,
-          code: req.body.clientCode,
-          company: req.body.company,
-        },
+        isClient:
+          req.body.isClient === "on" || req.body.isClient === "true"
+            ? true
+            : false,
       };
+      // conditionally add clientID
+      if (req.body.clientId !== undefined) {
+        newUser.clientId = req.body.clientId;
+      }
+      // add code and company subproperties only if required
+      if (req.body.clientCode !== undefined && req.body.company !== undefined) {
+        newUser.clientCode = req.body.clientCode;
+        newUser.clientCompany = req.body.company;
+      }
+      // check if email belongs to a client
+      const client = await _clientRepo.getClientByEmail(newUser.email);
+      if (client) {
+        if(!newUser.clientId){
+          const errorMessage =
+          "This email belongs to a non-user client! If you want to add them as a user, you can do so through the client's details page.";
+        // render create form
+        return res.render("secure/admins/userCreate", {
+          title: "Express Billing Project: Create User",
+          authInfo: authInfo,
+          user: newUser,
+          message: { error: errorMessage },
+        });
+        }
+      }
       // check if passwords match
       if (req.body.password !== req.body.confirmPassword) {
         const errorMessage = "Passwords don't match!";
@@ -214,13 +255,26 @@ exports.CreateUser = async (req, res, next) => {
           message: { error: errorMessage },
         });
       }
-      // validation if isClient is unchecked but client details were submitted
-      if (
-        !newUser.clientDetails.isClient &&
-        (newUser.clientDetails.code || newUser.clientDetails.company)
-      ) {
+      // validation if isClient is unchecked but client details were submitted or vice versa
+      if (!newUser.isClient && (newUser.clientCode || newUser.clientCompany)) {
         const errorMessage =
           "Please check 'Is Client' if you want to add Client details!";
+        // render create form
+        return res.render("secure/admins/userCreate", {
+          title: "Express Billing Project: Create User",
+          authInfo: authInfo,
+          user: newUser,
+          message: { error: errorMessage },
+        });
+      }
+      // validation if isClient is checked but client details were not submitted
+      if (
+        !newUser.clientId &&
+        newUser.isClient &&
+        (!newUser.clientCode || !newUser.clientCompany)
+      ) {
+        const errorMessage =
+          "Please provide client details if you want to set user as client!";
         // render create form
         return res.render("secure/admins/userCreate", {
           title: "Express Billing Project: Create User",
@@ -281,8 +335,8 @@ exports.EditUserForm = async (req, res, next) => {
           message: errorMessage
             ? { error: errorMessage }
             : successMessage
-              ? { success: successMessage }
-              : {},
+            ? { success: successMessage }
+            : {},
         });
       }
       // if user does not exist
@@ -312,6 +366,12 @@ exports.EditUser = async (req, res, next) => {
       const successMessage = req.flash("success")[0];
       // get user from database
       const username = req.params.username;
+      // get user's current details to be used for cascading later
+      const currUserDoc = await _userRepo.getUserByUsername(username);
+      if (!currUserDoc) {
+        req.flash("error", "User not found!");
+        return res.redirect(`/users`);
+      }
       // create an editedUser object from form data
       const editedUser = {
         username: req.body.username,
@@ -320,7 +380,10 @@ exports.EditUser = async (req, res, next) => {
         lastName: req.body.lastName,
         roles: req.body.roles ? req.body.roles.split(",") : [],
         clientDetails: {
-          isClient: req.body.isClient === "on" ? true : false,
+          isClient:
+            req.body.isClient === "on" || req.body.isClient === "true"
+              ? true
+              : false,
           code: req.body.clientCode,
           company: req.body.company,
         },
@@ -339,15 +402,15 @@ exports.EditUser = async (req, res, next) => {
           message: errorMessage
             ? { error: errorMessage }
             : successMessage
-              ? { success: successMessage }
-              : {},
+            ? { success: successMessage }
+            : {},
         });
       }
       // else send the details to repo for update
       const response = await _userRepo.editUser(username, editedUser);
-      if (response.includes("Error")) {
+      if (!response) {
         // render the form agan with error
-        const errorMessage = response;
+        const errorMessage = "Error updating, please ensure unique username, email!";
         return res.render("secure/managers/userEdit", {
           title: `Express Billing Project: ${username} Edit`,
           authInfo: authInfo,
@@ -355,12 +418,23 @@ exports.EditUser = async (req, res, next) => {
           message: errorMessage
             ? { error: errorMessage }
             : successMessage
-              ? { success: successMessage }
-              : {},
+            ? { success: successMessage }
+            : {},
         });
       } else {
-        req.flash("success", response);
+        // invoke inUpdate cascade to update client details if user is a client too
+        const newUserDoc = response;
+        const updatCascadeResponse = await _userRepo.onUpdateCascadeClient(
+          currUserDoc,
+          newUserDoc
+        );
+        if (updatCascadeResponse) {
+          req.flash("success", "Details updated successfully!");
+          return res.redirect(`/users/${req.body.username}`);
+        } else {
+          req.flash("error", "User Details updated successfully, but failed to update Client Records!");
         return res.redirect(`/users/${req.body.username}`);
+        }
       }
     }
   } else {
@@ -384,7 +458,14 @@ exports.DeleteUser = async (req, res, next) => {
       } else {
         const response = await _userRepo.deleteUser(username);
         if (response) {
-          req.flash("success", `${username}'s account deleted successfully!`);
+          const deletedDoc = response;
+          const cascadeRequestResponse = await _userRepo.onDeleteCascade(deletedDoc);
+          if(cascadeRequestResponse){
+            req.flash("success", `${username}'s account deleted successfully!`);
+          }
+          else{
+            req.flash("error", `${username}'s account deleted successfully but failed to update client records!`);
+          }
           return res.redirect("/users");
         } else {
           req.flash("error", `Unable to delete ${username}'s account!`);

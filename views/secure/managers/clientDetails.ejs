@@ -1,0 +1,61 @@
+<div id="client-details-container" class="client-container">
+  <% if (customer) { %>
+  <% if (message.error) { %>
+  <div class="error-container">
+    <%= message.error %>
+  </div>
+  <% } %>
+  <% if (message.success) { %>
+  <div class="success-container">
+    <%= message.success %>
+  </div>
+  <% } %>
+
+  <h2><%= customer.firstName + " " + customer.lastName %>'s details</h2>
+  <a href="/clients">Return to Clients</a>
+
+  <table class="table">
+    <tbody>
+      <tr>
+        <th scope="row">Client ID</th>
+        <td><%= customer._id %></td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td><%= customer.email %></td>
+      </tr>
+      <tr>
+        <th>Short Code</th>
+        <td><%= customer.code %></td>
+      </tr>
+      <tr>
+        <th>Company</th>
+        <td><%= customer.company %></td>
+      </tr>
+      <tr>
+        <th>Is User?</th>
+        <td><%= customer.username? "Yes" : "No" %></td>
+      </tr>
+      <%if(customer.username){
+        %>
+      <tr>
+        <th>Username</th>
+        <td><a href="/users/<%= customer.username%>"><%= customer.username%></a></td>
+      </tr>
+      <%
+      }
+      %>
+    </tbody>
+  </table>
+
+  <p>
+    <% if (!customer.username) { %>
+    <a href="/users/create?clientId=<%= customer._id %>" class="edit-link">Add as User</a>
+    <% } %>
+    <a href="/clients/<%= customer._id %>/edit" class="edit-link">Update</a>
+  </p>
+
+  <% } else { %>
+  <p>No record found!</p>
+  <% } %>
+</div>

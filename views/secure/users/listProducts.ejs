@@ -15,8 +15,8 @@
     <% } %>
     <form id="search-form" action="/products" method="get">
         <div class="search-container">
-            <input type="text" id="search-input" name="query" placeholder="Search by Name, or Code" />
-            <button type="submit" id="search-button">Search</button>
+            <input type="text" class="search-input" name="query" placeholder="Search by Name, or Code" />
+            <button type="submit" class="search-button">Search</button>
         </div>
     </form>
     <%if(isSearch){
@@ -25,7 +25,7 @@
     <% if (!products || products.length === 0) { %>
         <div>No Products found!</div>
     <% } else { %>
-        <table>
+        <table class="table">
             <tr>
                 <th>Product Name</th>
                 <th></th>
