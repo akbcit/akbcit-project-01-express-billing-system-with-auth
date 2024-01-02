@@ -79,14 +79,16 @@ exports.RegisterUser = (req, res, next) => {
     } else {
       // check if a client exists with this email
       const clientDoc = await _clientRepo.getClientByEmail(newUser.email);
-      // if yes update the client's username, name and add clientID to user
-      clientDoc.username = newUser.username;
-      clientDoc.firstName = newUser.firstName;
-      clientDoc.lastName = newUser.lastName;
-      await clientDoc.save();
-      const userDoc = await _userRepo.getUserByEmail(newUser.email);
-      userDoc.clientId = clientDoc._id;
-      await userDoc.save();
+      if (clientDoc) {
+        // if yes update the client's username, name and add clientID to user
+        clientDoc.username = newUser.username;
+        clientDoc.firstName = newUser.firstName;
+        clientDoc.lastName = newUser.lastName;
+        await clientDoc.save();
+        const userDoc = await _userRepo.getUserByEmail(newUser.email);
+        userDoc.clientId = clientDoc._id;
+        await userDoc.save();
+      }
       // login user
       passport.authenticate("local", (err, user) => {
         if (err) {
