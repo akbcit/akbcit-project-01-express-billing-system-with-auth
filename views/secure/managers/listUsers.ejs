@@ -41,8 +41,8 @@
       <td>
         <%= user.roles && user.roles.length > 0 ? user.roles.join(", ") : '--' %>
       </td>
-      <td>
-        <%= user.clientId ? 'Yes' : 'No' %>
+      <td class="status-text">
+        <%= user.clientId ? "Yes" : "No" %>
       </td>
       <td>
         <a href="/users/<%= encodeURIComponent(user.username) %>" class="view-link">View</a>
@@ -51,3 +51,4 @@
     <% }); %>
   </table>
 </div>
+<script src ="/scripts/generalScript.js" defer></script>

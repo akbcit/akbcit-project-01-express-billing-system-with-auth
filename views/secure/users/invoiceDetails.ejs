@@ -1,79 +1,99 @@
 <div id="invoice-details-page">
-    <div class="hide-for-print">
-        <a href="/invoices">Return to Invoices</a>
-    </div>
-    <div id="invoice-details-container">
-        <div id="invoice-header">
-            <div class="logo-and-info">
-                <img src="../images/iota-logo2.svg" alt="company logo" id="invoice-logo"/>
-                <div class="company-info">
-                    <p>Iota LLC</p>
-                    <p>123 Hills Street</p>
-                    <p>Vancouver, BC</p>
-                    <p>V1N 2G4</p>
-                    <p>iota@mail.llc</p>
-                </div>
-            </div>
-        <p class="invoice-number">Invoice # <%= invoice.invoiceNum %></p>
+  <div class="hide-for-print">
+    <a href="/invoices">Return to Invoices</a>
+  </div>
+  <div id="invoice-details-container">
+    <div id="invoice-header">
+      <div class="logo-and-info">
+        <img
+          src="../images/iota-logo2.svg"
+          alt="company logo"
+          id="invoice-logo"
+        />
+        <div class="company-info">
+          <p>Iota LLC</p>
+          <p>123 Hills Street</p>
+          <p>Vancouver, BC</p>
+          <p>V1N 2G4</p>
+          <p>iota@mail.llc</p>
+        </div>
+      </div>
+      <p class="invoice-number">Invoice # <%= invoice.invoiceNum %></p>
     </div>
     <div class="summary mt-4">
-        <div class="bill-to">
-            <h7>Bill To: </h7>
-            <strong>Name </strong><%=invoice.client.name%><br>
-            <strong>Company </strong><%=invoice.client.company %>
+      <div class="bill-to">
+        <h7>Bill To: </h7>
+        <strong>Name </strong><%=invoice.client.name%><br />
+        <strong>Company </strong><%=invoice.client.company %>
+      </div>
+      <div class="invoice-details">
+        <div class="col-md-12 d-flex justify-content-end">
+          <div class="col-m-4 invoice-details-date border border-dark p-3">
+            <h5>DATE</h5>
+            <p><%=invoice.issueDate.toISOString().split('T')[0] %></p>
+          </div>
+          <div class="col-m-4 invoice-details-pay border border-dark p-3">
+            <h5>PLEASE PAY</h5>
+            <p>$<%= invoice.totalDue %></p>
+          </div>
+          <div class="col-m-4 invoice-details-due-date border border-dark p-3">
+            <h5>DUE DATE</h5>
+            <p><%=invoice.dueDate.toISOString().split('T')[0] %></p>
+          </div>
         </div>
-        <div class="invoice-details">
-          <div class="col-md-12 d-flex justify-content-end">
-            <div class="col-m-4 invoice-details-date border border-dark p-3">
-              <h5>DATE</h5>
-              <p><%=invoice.issueDate.toISOString().split('T')[0] %></p>
-            </div>
-            <div class="col-m-4 invoice-details-pay border border-dark p-3">
-                <h5>PLEASE PAY</h5>
-                <p>$<%= invoice.totalDue %></p>
-              </div>
-            <div class="col-m-4 invoice-details-due-date border border-dark p-3">
-              <h5>DUE DATE</h5>
-              <p><%=invoice.dueDate.toISOString().split('T')[0] %></p>
-            </div>
-          </div>
-          </div>
+      </div>
     </div>
     <table class="table mt-5 mb-3">
       <thead>
-          <tr>
-              <th class="item"><h4>ITEM</h4></th>
-              <th class="qty"><h4>QTY</h4></th>
-              <th class="rate"><h4>RATE</h4></th>
-              <th class="amount"><h4>AMOUNT</h4></th>
-          </tr>
+        <tr>
+          <th class="item">
+            <h4>ITEM</h4>
+          </th>
+          <th class="qty">
+            <h4>QTY</h4>
+          </th>
+          <th class="rate">
+            <h4>RATE</h4>
+          </th>
+          <th class="amount">
+            <h4>AMOUNT</h4>
+          </th>
+        </tr>
       </thead>
       <tbody>
-          <% if (invoice.lineItems && invoice.lineItems.length > 0) { %>
-              <% invoice.lineItems.forEach((item) => { %>
-                  <tr>
-                      <td><%= item.productName %></td>
-                      <td class="qty"><%= item.qty %></td>
-                      <td class="rate">$<%= item.unitCost.toFixed(2) %></td>
-                      <td class="amount">$<%= (item.qty * item.unitCost).toFixed(2) %></td>
-                  </tr>
-              <% }) %>
-          <% } else { %>
-              <tr>
-                  <td colspan="4">No line items found</td>
-              </tr>
-          <% } %>
+        <% if (invoice.lineItems && invoice.lineItems.length > 0) { %> <%
+        invoice.lineItems.forEach((item) => { %>
+        <tr>
+          <td><%= item.productName %></td>
+          <td class="qty"><%= item.qty %></td>
+          <td class="rate">
+            $<%= Number(item.unitCost).toLocaleString(undefined, {
+            minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+          </td>
+          <td class="amount">
+            $<%= Number(item.qty * item.unitCost).toLocaleString(undefined, {
+            minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+          </td>
+        </tr>
+        <% }) %> <% } else { %>
+        <tr>
+          <td colspan="4">No line items found</td>
+        </tr>
+        <% } %>
       </tbody>
-  </table>
+    </table>
     <div class="payment-summary mt-5">
-        <div class="payment-summary-1">
-          <p>Please remit payment via Interac E-Transfer to</p>
-          <p>pay@iota.llc</p>
-        </div>
-        <div class="payment-summary-2">
-            <p class="fs-4">TOTAL DUE</p>
-            <p>$<%= invoice.totalDue %></p>
-          </div>
+      <div class="payment-summary-1">
+        <p>Please remit payment via Interac E-Transfer to</p>
+        <p><strong>payment@iota.llc</strong></p>
+      </div>
+      <div class="payment-summary-2">
+        <p class="fs-4">TOTAL DUE</p>
+        <p>
+          $<%= Number(invoice.totalDue).toLocaleString(undefined, {
+          minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+        </p>
+      </div>
     </div>
+  </div>
 </div>
-

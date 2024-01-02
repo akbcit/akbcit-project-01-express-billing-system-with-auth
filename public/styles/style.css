@@ -340,7 +340,7 @@ input[type="submit"]:hover {
 
 #dashboard-prompt {
   text-align: center;
-  font-size: xx-small;
+  font-size: small;
   font-style: italic;
   color: red;
 }
@@ -734,8 +734,8 @@ h2 {
   background-color: white;
   max-width: 600px;
   height: 800px;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 #invoice-header {
@@ -761,6 +761,7 @@ h2 {
   margin-top: 20px;
   display: flex;
   align-items: center;
+  gap:5px;
 }
 
 #invoice-number {
@@ -866,6 +867,14 @@ h5 {
   justify-content: center;
   align-items: center;
   color: white;
+}
+
+.status-yes {
+  color: green !important;
+}
+
+.status-no {
+  color: red !important;
 }
 
 /* Hiding the navbar and return to invoices button when printing */

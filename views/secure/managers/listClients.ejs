@@ -1,50 +1,54 @@
 <div id="clientlist-container">
   <h3>Clients</h3>
   <% if (message.error) { %>
-  <div class="error-container">
-    <%= message.error %>
-  </div>
-  <% } %>
-  <% if (message.success) { %>
-  <div class="success-container">
-    <%= message.success %>
-  </div>
-  <% } %>
-  <% if (authInfo.roles.includes("admin")||authInfo.roles.includes("manager")) { %>
+  <div class="error-container"><%= message.error %></div>
+  <% } %> <% if (message.success) { %>
+  <div class="success-container"><%= message.success %></div>
+  <% } %> <% if
+  (authInfo.roles.includes("admin")||authInfo.roles.includes("manager")) { %>
   <a href="/clients/create" class="add-link">Add a new Client</a>
   <% } %>
   <div id="search-bar">
     <form action="/clients" method="get" class="w-100 mb-3">
       <div class="search-container">
-        <input type="text" class="search-input" name="query" placeholder="Enter client's name" />
+        <input
+          type="text"
+          class="search-input"
+          name="query"
+          placeholder="Enter client's name"
+        />
         <button type="submit" class="search-button">Search</button>
       </div>
     </form>
   </div>
 
-  <div id="client-list" class="w-100 d-flex justify-content-center align-items-center flex-column">
+  <div
+    id="client-list"
+    class="w-100 d-flex justify-content-center align-items-center flex-column"
+  >
     <table class="table">
       <tr>
-        <td>
-          Client Name
-        </td>
-        <td>
-          Is User?
-        </td>
-        <td>
-        </td>
+        <td>Client Name</td>
+        <td>Is User?</td>
         <td></td>
+        <% if (authInfo.roles.includes("admin")) { %>
+        <td></td>
+        <% } %>
       </tr>
       <% clients.forEach((client) => { %>
       <tr>
-        <td><a href="/clients/<%= client.id %>" class="text-decoration-none"><%= client.firstName + " " + client.lastName %></a></td>
-        <td><%=client.username?"Yes":"No"%></td>
+        <td>
+          <a href="/clients/<%= client.id %>" class="text-decoration-none"
+            ><%= client.firstName + " " + client.lastName %></a
+          >
+        </td>
+        <td class="status-text"><%=client.username?"Yes":"No"%></td>
         <% if (authInfo.roles.includes("admin")) { %>
         <td class="text-end">
-          <a href="/clients/<%= client.id %>/delete" class="delete-link">Delete</a>
+          <a href="/clients/<%= client.id %>/delete" class="delete-link"
+            >Delete</a>
         </td>
-        <% } %>
-        <% if (authInfo.roles.includes("manager")) { %>
+        <% } %> <% if (authInfo.roles.includes("manager")) { %>
         <td class="text-end">
           <a href="/clients/<%= client.id %>/edit" class="edit-link">Update</a>
         </td>
@@ -54,3 +58,4 @@
     </table>
   </div>
 </div>
+<script src ="/scripts/generalScript.js" defer></script>

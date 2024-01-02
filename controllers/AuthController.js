@@ -15,8 +15,8 @@ exports.RegistrationForm = (req, res, next) => {
   const authInfo = verifyAuth(req);
   const isAuthenticated = authInfo.authenticated;
   if (isAuthenticated) {
-    // placeholder
-    return res.send("logout first");
+    // redirect to userpage
+    return res.redirect("/auth/user");
   }
   res.status(201).render("register", {
     title: "Express Billing Project: Register",
@@ -266,10 +266,7 @@ exports.SelfEdit = async (req, res) => {
     }
     // invoke inUpdate cascade to update client details if user is a client too
     const newUserDoc = response;
-    await _userRepo.onUpdateCascadeClient(
-      currUserDoc,
-      newUserDoc
-    );
+    await _userRepo.onUpdateCascadeClient(currUserDoc, newUserDoc);
     // if username changed login again automatically
     if (username !== editedDetails.username) {
       console.log(`new username: ${editedDetails.username}`);
