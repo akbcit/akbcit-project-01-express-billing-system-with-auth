@@ -15,7 +15,7 @@
   <% } %>
   <form id="search-form" action="/invoices" method="get">
     <div class="search-container">
-      <input type="text" class="search-input" name="query" placeholder=<%=authInfo.roles.includes("admin")||authInfo.roles.includes("manager")?"Search by client or product":"Search by product"%> />
+      <input type="text" class="search-input" name="query" placeholder="<%=authInfo.roles.includes("admin")||authInfo.roles.includes("manager")?"Search by client ot product":"Search by product"%>"/>
       <button type="submit" class="search-button">Search</button>
     </div>
   </form>
