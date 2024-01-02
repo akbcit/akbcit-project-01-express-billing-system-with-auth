@@ -17,7 +17,10 @@ class ClientRepo {
       let filterObj = {};
       if (searchPhrase) {
         filterObj = {
-          name: { $regex: searchPhrase, $options: "i" },
+          $or: [
+            { firstName: { $regex: searchPhrase, $options: "i" } },
+            { lastName: { $regex: searchPhrase, $options: "i" } }
+          ]
         };
       }
       console.log("getting all clients from Database");

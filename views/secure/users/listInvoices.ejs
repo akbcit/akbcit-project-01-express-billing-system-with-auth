@@ -1,58 +1,62 @@
 <div id="invoicelist-container">
-    <h2>Invoices</h2>
-    <% if (message.error) { %>
-        <div class="error-container">
-            <%= message.error %>
-        </div>
-    <% } %>
-    <% if (message.success) { %>
-        <div class="success-container">
-            <%= message.success %>
-        </div>
-    <% } %>
-    <% if (authInfo.roles.includes("admin")||authInfo.roles.includes("manager")) { %>
-        <a href="/invoices/create" class="add-link">Add Invoice</a>
-    <% } %>
-    <form id="search-form" action="/invoices" method="get">
-        <div class="search-container">
-            <input type="text" class="search-input" name="query" placeholder=<%=authInfo.roles.includes("admin")||authInfo.roles.includes("manager")?"Search by client or product":"Search by product"%> />
-            <button type="submit" class="search-button">Search</button>
-        </div>
-    </form>
-    <% if (!invoices || invoices.length === 0) { %>
-        <div>No Invoices found!</div>
-    <% } else { %>
-        <table class="table">
-            <tr>
-                <td>Invoice</td>
-                <td>Status</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <% invoices.forEach((invoice) => { %>
-            <tr>
-                <td>
-                    <a href="/invoices/<%= invoice.id %>">
-                        <%= `${invoice.invoiceNum}-${invoice.client.name}-${invoice.issueDate.toISOString().split('T')[0]}` %>
-                      </a>
-                </td>
-                <td>
-                    <%=invoice.isPaid?"Paid":"Unpaid"%>
-                </td>
-                <% if (authInfo.roles.includes("admin")||authInfo.roles.includes("manager")) { %>
-                    <td>
-                        <% if (!invoice.isPaid) { %>
-                            <a href="/invoices/<%= invoice.id %>/paid" class="btn btn-success btn-sm">Mark Paid</a>
-                        <% } %>
-                    </td>
-                <% } %>
-                <% if (authInfo.roles.includes("admin")) { %>
-                    <td>
-                        <a href="/invoices/<%= invoice.id %>/delete" class="btn btn-danger btn-sm">Delete</a>
-                    </td>
-                <% } %>
-            </tr>
-            <% }); %>
-        </table>
-    <% } %>
+  <h2>Invoices</h2>
+  <% if (message.error) { %>
+  <div class="error-container">
+    <%= message.error %>
+  </div>
+  <% } %>
+  <% if (message.success) { %>
+  <div class="success-container">
+    <%= message.success %>
+  </div>
+  <% } %>
+  <% if (authInfo.roles.includes("admin")||authInfo.roles.includes("manager")) { %>
+  <a href="/invoices/create" class="add-link">Add Invoice</a>
+  <% } %>
+  <form id="search-form" action="/invoices" method="get">
+    <div class="search-container">
+      <input type="text" class="search-input" name="query" placeholder=<%=authInfo.roles.includes("admin")||authInfo.roles.includes("manager")?"Search by client or product":"Search by product"%> />
+      <button type="submit" class="search-button">Search</button>
+    </div>
+  </form>
+  <% if (!invoices || invoices.length === 0) { %>
+  <div>No Invoices found!</div>
+  <% } else { %>
+  <table class="table">
+    <tr>
+      <td>Invoice</td>
+      <td>Status</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <% invoices.forEach((invoice) => { %>
+    <tr>
+      <td>
+        <a href="/invoices/<%= invoice.id %>">
+          <%= `${invoice.invoiceNum}-${invoice.client.name}-${invoice.issueDate.toISOString().split('T')[0]}` %>
+        </a>
+      </td>
+      <td>
+        <%=invoice.isPaid?"Paid":"Unpaid"%>
+      </td>
+      <% if (authInfo.roles.includes("admin") || authInfo.roles.includes("manager")) { %>
+      <td>
+        <% if (!invoice.isPaid) { %>
+        <a href="/invoices/<%= invoice.id %>/paid" class="btn btn-success btn-sm">Mark Paid</a>
+        <% } %>
+      </td>
+      <% } else { %>
+      <td></td>
+      <% } %>
+      <% if (authInfo.roles.includes("admin")) { %>
+      <td>
+        <a href="/invoices/<%= invoice.id %>/delete" class="btn btn-danger btn-sm">Delete</a>
+      </td>
+      <% } else { %>
+      <td></td>
+      <% } %>
+    </tr>
+    <% }); %>
+  </table>
+  <% } %>
 </div>

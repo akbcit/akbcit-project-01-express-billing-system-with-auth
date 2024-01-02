@@ -70,6 +70,8 @@ class InvoiceRepo {
 
   // method to create an invoice
   async createInvoice(newInvoice) {
+    console.log("invoice in repo");
+    console.log(newInvoice);
     try {
       // create a document using newInvoice object
       const newInvoiceDoc = await Invoice.create(newInvoice);
