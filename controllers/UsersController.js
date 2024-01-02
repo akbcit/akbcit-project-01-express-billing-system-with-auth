@@ -120,6 +120,11 @@ exports.UserDetails = async (req, res, next) => {
       // get user by username and send to view
       const user = await _userRepo.getUserByUsername(username);
       if (user) {
+        // if this user is an admin but authinfo does not have admin, redirect
+        if(user.roles.includes("admin")&&!authInfo.roles.includes("admin")){
+          req.flash("error","Could not find/load user");
+          return res.redirect("/users");
+        }
         res.render("secure/managers/userDetails", {
           title: `Express Billing Project: ${username} Details`,
           user: user,
@@ -160,7 +165,6 @@ exports.CreateUserForm = async (req, res, next) => {
       if (clientId) {
         // Retrieve client details from the repository
         const client = await _clientRepo.getClientById(clientId);
-
         // Populate the user object with client details
         user = {
           firstName: client.firstName,
@@ -328,6 +332,11 @@ exports.EditUserForm = async (req, res, next) => {
       const user = await _userRepo.getUserByUsername(username);
       // if user exists
       if (user) {
+        // if this user is an admin but authinfo does not have admin, redirect
+        if(user.roles.includes("admin")&&!authInfo.roles.includes("admin")){
+          req.flash("error","Could not find/load user");
+          return res.redirect("/users");
+        }
         return res.render("secure/managers/userEdit", {
           title: `Express Billing Project: ${username} Edit`,
           authInfo: authInfo,
